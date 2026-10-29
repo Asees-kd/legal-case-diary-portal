@@ -8,7 +8,7 @@
 - **Roll Number:** 23102C0050
 - **Course:** DevOps Engineering Lab / Project
 - **Workspace:** `C:\Users\ssing\Desktop\devops`
-- **Current Status:** In Active Development (Sprint 1 Feature Baseline)
+- **Current Status:** MVP Release Candidate v1.0.0 (Stabilized Baseline)
 
 ---
 
@@ -35,17 +35,17 @@ The application enforces strict separation of duties across three primary organi
 
 ```
 [ FILED ]
-   │
-   │  (Advanced by LAWYER or ADMIN)
-   ▼
+   â”‚
+   â”‚  (Advanced by LAWYER or ADMIN)
+   â–¼
 [ UNDER_REVIEW ]
-   │
-   │  (Advanced by LAWYER or ADMIN)
-   ▼
+   â”‚
+   â”‚  (Advanced by LAWYER or ADMIN)
+   â–¼
 [ HEARING_SCHEDULED ]
-   │
-   │  (Exclusively closed by ADMIN)
-   ▼
+   â”‚
+   â”‚  (Exclusively closed by ADMIN)
+   â–¼
 [ CLOSED ]
 ```
 
@@ -83,39 +83,39 @@ The application enforces strict separation of duties across three primary organi
 
 ```
 devops/
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   │   ├── bug_report.md
-│   │   └── feature_request.md
-│   └── pull_request_template.md
-├── docs/
-│   ├── 01-problem-definition.md      # Official Task 1: Problem statement & SLA metrics
-│   ├── 02-agile-plan.md              # Official Task 2: User stories, MoSCoW backlog & Sprints
-│   ├── 02-kanban-setup-steps.md      # Official Task 2: Step-by-step GitHub Projects guide
-│   ├── 03-srs-architecture.md       # Official Task 3: Full SRS, endpoints & security
-│   ├── architecture.mmd              # System architecture diagram (Mermaid)
-│   ├── devops-lifecycle.mmd          # DevOps infinity loop toolchain diagram (Mermaid)
-│   ├── er-diagram.mmd                # Entity relationship diagram (Mermaid)
-│   └── use-case.mmd                  # Role use case diagram (Mermaid)
-├── src/
-│   ├── main/
-│   │   ├── java/com/legal/diary/
-│   │   │   ├── LegalDiaryApplication.java
-│   │   │   ├── config/SecurityConfig.java
-│   │   │   └── controller/HomeController.java
-│   │   └── resources/
-│   │       ├── application.properties
-│   │       ├── static/css/styles.css
-│   │       └── templates/
-│   │           ├── index.html
-│   │           └── login.html
-│   └── test/java/com/legal/diary/
-│       └── LegalDiaryApplicationTests.java
-├── .gitignore                        # Strict rules excluding target/, data/, logs/, secrets
-├── CONTRIBUTING.md                   # Branching policy, commit conventions, PR rules
-├── pom.xml                           # Maven POM configuration (WAR packaging, Spring Boot 3.3.5)
-├── PROGRESS.md                       # Comprehensive course progress and verification audit
-└── README.md                         # Project documentation and developer guide
+â”œâ”€â”€ .github/
+â”‚   â”œâ”€â”€ ISSUE_TEMPLATE/
+â”‚   â”‚   â”œâ”€â”€ bug_report.md
+â”‚   â”‚   â””â”€â”€ feature_request.md
+â”‚   â””â”€â”€ pull_request_template.md
+â”œâ”€â”€ docs/
+â”‚   â”œâ”€â”€ 01-problem-definition.md      # Official Task 1: Problem statement & SLA metrics
+â”‚   â”œâ”€â”€ 02-agile-plan.md              # Official Task 2: User stories, MoSCoW backlog & Sprints
+â”‚   â”œâ”€â”€ 02-kanban-setup-steps.md      # Official Task 2: Step-by-step GitHub Projects guide
+â”‚   â”œâ”€â”€ 03-srs-architecture.md       # Official Task 3: Full SRS, endpoints & security
+â”‚   â”œâ”€â”€ architecture.mmd              # System architecture diagram (Mermaid)
+â”‚   â”œâ”€â”€ devops-lifecycle.mmd          # DevOps infinity loop toolchain diagram (Mermaid)
+â”‚   â”œâ”€â”€ er-diagram.mmd                # Entity relationship diagram (Mermaid)
+â”‚   â””â”€â”€ use-case.mmd                  # Role use case diagram (Mermaid)
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ main/
+â”‚   â”‚   â”œâ”€â”€ java/com/legal/diary/
+â”‚   â”‚   â”‚   â”œâ”€â”€ LegalDiaryApplication.java
+â”‚   â”‚   â”‚   â”œâ”€â”€ config/SecurityConfig.java
+â”‚   â”‚   â”‚   â””â”€â”€ controller/HomeController.java
+â”‚   â”‚   â””â”€â”€ resources/
+â”‚   â”‚       â”œâ”€â”€ application.properties
+â”‚   â”‚       â”œâ”€â”€ static/css/styles.css
+â”‚   â”‚       â””â”€â”€ templates/
+â”‚   â”‚           â”œâ”€â”€ index.html
+â”‚   â”‚           â””â”€â”€ login.html
+â”‚   â””â”€â”€ test/java/com/legal/diary/
+â”‚       â””â”€â”€ LegalDiaryApplicationTests.java
+â”œâ”€â”€ .gitignore                        # Strict rules excluding target/, data/, logs/, secrets
+â”œâ”€â”€ CONTRIBUTING.md                   # Branching policy, commit conventions, PR rules
+â”œâ”€â”€ pom.xml                           # Maven POM configuration (WAR packaging, Spring Boot 3.3.5)
+â”œâ”€â”€ PROGRESS.md                       # Comprehensive course progress and verification audit
+â””â”€â”€ README.md                         # Project documentation and developer guide
 ```
 
 ---
@@ -172,12 +172,12 @@ For demonstration, testing, and assessment evaluation, the system provides pre-c
 
 The project follows a disciplined Git branching model:
 
-- `main` — Production-ready releases only. Every commit on `main` is stable, tested, and deployable.
-- `develop` — Central integration branch for completed feature branches.
-- `feature/<name>` — Isolated feature development (e.g., `feature/domain-model`, `feature/case-search`).
-- `bugfix/<name>` — Defect resolutions branched from `develop`.
-- `release/<version>` — Staging and stabilization prior to merging into `main`.
-- `hotfix/<name>` — Critical production fixes branched directly from `main`.
+- `main` â€” Production-ready releases only. Every commit on `main` is stable, tested, and deployable.
+- `develop` â€” Central integration branch for completed feature branches.
+- `feature/<name>` â€” Isolated feature development (e.g., `feature/domain-model`, `feature/case-search`).
+- `bugfix/<name>` â€” Defect resolutions branched from `develop`.
+- `release/<version>` â€” Staging and stabilization prior to merging into `main`.
+- `hotfix/<name>` â€” Critical production fixes branched directly from `main`.
 
 Detailed collaboration instructions, pull request workflows, and Conventional Commit specifications are documented in [`CONTRIBUTING.md`](file:///c:/Users/ssing/Desktop/devops/CONTRIBUTING.md).
 
@@ -188,29 +188,29 @@ Detailed collaboration instructions, pull request workflows, and Conventional Co
 The complete DevOps lifecycle integrates continuous integration, automated continuous testing, container lifecycle management, and automated provisioning:
 
 ```
-┌────────────────┐      ┌─────────────────────────┐      ┌─────────────────────────┐
-│  Developer     │ ───> │  GitHub Repository      │ ───> │  Jenkins CI (Port 9090) │
-│  Git Commit/PR │      │  (main / develop)       │      │  (Windows Service / bat)│
-└────────────────┘      └─────────────────────────┘      └────────────┬────────────┘
-                                                                      │
-                                   ┌──────────────────────────────────┴──────────────────────────────────┐
-                                   ▼                                                                     ▼
-                        ┌─────────────────────┐                                               ┌─────────────────────┐
-                        │  Maven Build & Test │                                               │  Selenium Suite     │
-                        │  (mvn clean package)│                                               │  (8 Test Cases E2E) │
-                        └──────────┬──────────┘                                               └──────────┬──────────┘
-                                   │                                                                     │
-                                   ▼                                                                     ▼
-                        ┌────────────────────────────────────────────────────────────────────────────────────────┐
-                        │                              Continuous Deployment Pipeline                            │
-                        └──────────┬──────────────────────────────────┬──────────────────────────────────┬───────┘
-                                   │                                  │                                  │
-                                   ▼                                  ▼                                  ▼
-                        ┌─────────────────────┐            ┌─────────────────────┐            ┌─────────────────────┐
-                        │ Apache Tomcat 10.1  │            │ Docker Hub Registry │            │ Ansible Automation  │
-                        │ Standalone (8080)   │            │ aseeskaurd/legal-   │            │ WSL2 Ubuntu (8083)  │
-                        │ (C:\tomcat10)       │            │ diary (8082)        │            │ Reliability Check   │
-                        └─────────────────────┘            └─────────────────────┘            └─────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  Developer     â”‚ â”€â”€â”€> â”‚  GitHub Repository      â”‚ â”€â”€â”€> â”‚  Jenkins CI (Port 9090) â”‚
+â”‚  Git Commit/PR â”‚      â”‚  (main / develop)       â”‚      â”‚  (Windows Service / bat)â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜      â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜      â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                                                                      â”‚
+                                   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                                   â–¼                                                                     â–¼
+                        â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”                                               â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                        â”‚  Maven Build & Test â”‚                                               â”‚  Selenium Suite     â”‚
+                        â”‚  (mvn clean package)â”‚                                               â”‚  (8 Test Cases E2E) â”‚
+                        â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜                                               â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+                                   â”‚                                                                     â”‚
+                                   â–¼                                                                     â–¼
+                        â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                        â”‚                              Continuous Deployment Pipeline                            â”‚
+                        â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”˜
+                                   â”‚                                  â”‚                                  â”‚
+                                   â–¼                                  â–¼                                  â–¼
+                        â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”            â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+                        â”‚ Apache Tomcat 10.1  â”‚            â”‚ Docker Hub Registry â”‚            â”‚ Ansible Automation  â”‚
+                        â”‚ Standalone (8080)   â”‚            â”‚ aseeskaurd/legal-   â”‚            â”‚ WSL2 Ubuntu (8083)  â”‚
+                        â”‚ (C:\tomcat10)       â”‚            â”‚ diary (8082)        â”‚            â”‚ Reliability Check   â”‚
+                        â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜            â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜            â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 1. **Source Control Management:** Code committed following Conventional Commits, merged to `develop` via audited Pull Requests on GitHub.
