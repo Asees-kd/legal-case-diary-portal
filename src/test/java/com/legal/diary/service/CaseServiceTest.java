@@ -141,4 +141,34 @@ class CaseServiceTest {
         LegalCase closed = caseService.transitionStatus(created.getId(), CaseStatus.CLOSED, null, null, "Final order passed", "admin", adminAuth);
         assertEquals(CaseStatus.CLOSED, closed.getStatus());
     }
+
+    @Test
+    @DisplayName("Should update case metadata and bench directives")
+    void testUpdateCase() {
+        LegalCase testCase = new LegalCase(
+                "TEST/2026/005",
+                "Original Title",
+                CaseType.CIVIL,
+                "District Court",
+                "Party A",
+                "Party B",
+                LocalDate.now()
+        );
+        LegalCase created = caseService.createCase(testCase, "clerk");
+
+        LegalCase updateData = new LegalCase();
+        updateData.setTitle("Amended Title - High Court Transfer");
+        updateData.setCaseType(CaseType.CORPORATE);
+        updateData.setCourtName("High Court of Delhi");
+        updateData.setPetitionerName("Party A Amended");
+        updateData.setRespondentName("Party B Amended");
+        updateData.setHearingDate(LocalDate.now().plusDays(10));
+        updateData.setHearingNotes("Urgent listing requested");
+
+        LegalCase updated = caseService.updateCase(created.getId(), updateData, "lawyer");
+        assertEquals("Amended Title - High Court Transfer", updated.getTitle());
+        assertEquals(CaseType.CORPORATE, updated.getCaseType());
+        assertEquals("High Court of Delhi", updated.getCourtName());
+        assertEquals("Urgent listing requested", updated.getHearingNotes());
+    }
 }
