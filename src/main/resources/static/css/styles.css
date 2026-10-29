@@ -615,3 +615,263 @@ a:hover {
   }
 }
 
+
+
+/* Additional Component Aliases for Layout & Stepper */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--text-ink-navy);
+  color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #0D1629;
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-brand h2 {
+  font-size: 1.15rem;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.sidebar-brand span {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8D99AE;
+  display: block;
+  margin-top: 2px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
+  color: #D1D5DB;
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-nav a:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.sidebar-nav a.active {
+  background-color: rgba(176, 141, 60, 0.15);
+  color: var(--accent-brass);
+  border-left-color: var(--accent-brass);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 18px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--accent-brass);
+  color: var(--text-ink-navy);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.user-name {
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.user-role {
+  color: #8D99AE;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.top-header {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border-editorial);
+  padding: 20px 32px;
+  margin: -32px -32px 28px -32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-header h1 {
+  font-size: 1.55rem;
+  margin: 0;
+}
+
+.top-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 4px 0 0 0;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: var(--bg-card-subtle);
+  color: var(--text-ink-navy);
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 12px 18px;
+  border-bottom: 2px solid var(--border-editorial);
+  letter-spacing: 0.02em;
+}
+
+.data-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-editorial);
+  font-size: 0.88rem;
+  vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+  background-color: #FAF8F4;
+}
+
+.case-number-link {
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--accent-brass);
+  font-size: 0.92rem;
+}
+
+.case-number-link:hover {
+  color: var(--accent-brass-hover);
+  text-decoration: underline;
+}
+
+.form-error {
+  color: var(--urgent-oxblood);
+  font-size: 0.78rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* 4-Step Vertical Lifecycle Stepper */
+.workflow-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  padding-left: 12px;
+}
+
+.workflow-stepper::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 27px;
+  width: 2px;
+  background-color: var(--border-editorial);
+  z-index: 1;
+}
+
+.workflow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.step-marker {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  border: 2px solid var(--border-strong);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.step-details {
+  flex: 1;
+  padding-top: 4px;
+}
+
+.step-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-ink-navy);
+}
+
+.step-meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.workflow-step.step-completed .step-marker {
+  background-color: var(--completed-sage);
+  border-color: var(--completed-sage);
+  color: #FFFFFF;
+}
+
+.workflow-step.step-completed .step-title {
+  color: var(--completed-sage);
+}
+
+.workflow-step.step-current .step-marker {
+  background-color: var(--accent-brass);
+  border-color: var(--accent-brass);
+  color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(176, 141, 60, 0.2);
+}
+
+.workflow-step.step-current .step-title {
+  color: var(--accent-brass);
+  font-weight: 700;
+}
+
+.workflow-step.step-pending .step-marker {
+  background-color: #FAF8F4;
+  border-color: var(--border-editorial);
+  color: var(--text-muted);
+}
+
+.workflow-step.step-pending .step-title {
+  color: var(--text-muted);
+}

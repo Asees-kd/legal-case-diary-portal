@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' &bull; Legal Case Diary Portal'">Legal Case Diary Portal</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:fragment="sidebar(activeNav)" class="sidebar">
+    <div class="sidebar-brand">
+        <svg class="brand-svg-icon" style="width: 32px; height: 32px;" viewBox="0 0 24 24" fill="#B08D3C">
+            <path d="M12 2C11.45 2 11 2.45 11 3V4.08C7.59 4.56 5 7.47 5 11V13H3V15H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V15H21V13H19V11C19 7.47 16.41 4.56 13 4.08V3C13 2.45 12.55 2 12 2ZM7 11C7 8.24 9.24 6 12 6C14.76 6 17 8.24 17 11V13H7V11ZM7 15H17V19H7V15Z"/>
+        </svg>
+        <div>
+            <h2>Legal Case Diary</h2>
+            <span>Senior Chamber Registry</span>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <a th:href="@{/dashboard}" th:classappend="${activeNav == 'dashboard'} ? 'active' : ''">
+            <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24">
+                <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z"/>
+            </svg>
+            Dashboard
+        </a>
+        <a th:href="@{/cases}" th:classappend="${activeNav == 'cases'} ? 'active' : ''">
+            <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24">
+                <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM7 7H17V9H7V7ZM7 11H17V13H7V11ZM7 15H14V17H7V15Z"/>
+            </svg>
+            Case Registry
+        </a>
+        <a sec:authorize="hasAnyRole('CLERK', 'ADMIN')" th:href="@{/cases/new}" th:classappend="${activeNav == 'new-case'} ? 'active' : ''">
+            <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24">
+                <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+            </svg>
+            File New Case
+        </a>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="sidebar-user-info">
+            <div class="user-avatar" sec:authentication="name" th:text="${#strings.substring(#authentication.name,0,1).toUpperCase()}">U</div>
+            <div style="overflow: hidden;">
+                <div class="user-name" sec:authentication="name">User</div>
+                <div class="user-role" sec:authentication="authorities">ROLE</div>
+            </div>
+        </div>
+        <form th:action="@{/logout}" method="post" style="margin-top: 12px;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 0.8rem; padding: 6px 10px;">
+                <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24">
+                    <path d="M16 17V14H9V10H16V7L21 12L16 17ZM14 2H4C2.9 2 2 2.9 2 4V20C2 21.1 2.9 22 4 22H14C15.1 22 16 21.1 16 20V17H14V20H4V4H14V7H16V4C16 2.9 15.1 2 14 2Z"/>
+                </svg>
+                Sign Out
+            </button>
+        </form>
+    </div>
+</div>
+
+<div th:fragment="header(pageTitle, subtitle)" class="top-header">
+    <div class="header-titles">
+        <h1 class="serif-heading" th:text="${pageTitle}">Registry</h1>
+        <p th:if="${subtitle}" th:text="${subtitle}">Litigation Docket &amp; Matter Tracking</p>
+    </div>
+    <div class="header-meta">
+        <div class="status-pill status-review" style="font-size: 0.78rem;">
+            Chamber Roll: 23102C0050
+        </div>
+    </div>
+</div>
+
+<div th:fragment="alerts">
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+        <svg style="width: 16px; height: 16px; fill: currentColor; flex-shrink: 0;" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"/>
+        </svg>
+        <span th:text="${successMessage}">Operation completed successfully.</span>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <svg style="width: 16px; height: 16px; fill: currentColor; flex-shrink: 0;" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"/>
+        </svg>
+        <span th:text="${errorMessage}">An error occurred.</span>
+    </div>
+</div>
+
+</body>
+</html>
