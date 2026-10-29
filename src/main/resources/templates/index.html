@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamber Dashboard &bull; Legal Case Diary Portal</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div class="app-layout">
+    <!-- Left Navigation Sidebar -->
+    <aside class="app-sidebar">
+        <div class="sidebar-header">
+            <div class="brand-emblem">
+                <svg class="brand-svg-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C11.45 2 11 2.45 11 3V4.08C7.59 4.56 5 7.47 5 11V13H3V15H5V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V15H21V13H19V11C19 7.47 16.41 4.56 13 4.08V3C13 2.45 12.55 2 12 2ZM7 11C7 8.24 9.24 6 12 6C14.76 6 17 8.24 17 11V13H7V11ZM7 15H17V19H7V15Z"/>
+                </svg>
+                <div>
+                    <div class="brand-title">Legal Case Diary</div>
+                    <div class="brand-subtext">Senior Chambers Portal</div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a th:href="@{/}" class="nav-link active">
+                <svg viewBox="0 0 24 24"><path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z"/></svg>
+                <span>Chamber Overview</span>
+            </a>
+            <a th:href="@{/cases}" class="nav-link">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V7H19V19ZM7 9H17V11H7V9ZM7 13H14V15H7V13Z"/></svg>
+                <span>Case Registry</span>
+            </a>
+            <a th:href="@{/cases/new}" class="nav-link" sec:authorize="hasAnyRole('CLERK', 'ADMIN')">
+                <svg viewBox="0 0 24 24"><path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>
+                <span>File New Case</span>
+            </a>
+            <a th:href="@{/h2-console}" target="_blank" class="nav-link" sec:authorize="hasRole('ADMIN')">
+                <svg viewBox="0 0 24 24"><path d="M12 3C7.58 3 4 4.79 4 7V17C4 19.21 7.59 21 12 21C16.41 21 20 19.21 20 17V7C20 4.79 16.42 3 12 3ZM18 17C18 17.5 15.58 19 12 19C8.42 19 6 17.5 6 17V15.2C7.38 16.28 9.54 17 12 17C14.46 17 16.62 16.28 18 15.2V17ZM18 13.2C16.62 14.28 14.46 15 12 15C9.54 15 7.38 14.28 6 13.2V11.2C7.38 12.28 9.54 13 12 13C14.46 13 16.62 12.28 18 11.2V13.2ZM12 5C15.58 5 18 6.5 18 7C18 7.5 15.58 9 12 9C8.42 9 6 7.5 6 7C6 6.5 8.42 5 12 5Z"/></svg>
+                <span>H2 Console (Admin)</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-badge" sec:authorize="isAuthenticated()">
+                <div class="user-identity" sec:authentication="name">Advocate</div>
+                <div class="user-role-pill" sec:authentication="principal.authorities[0]">ROLE</div>
+            </div>
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn-sidebar-logout">Sign Out of Chambers</button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="app-main">
+        <header class="top-bar">
+            <div>
+                <h1 class="serif-heading top-title">Chamber Litigation Overview</h1>
+                <div class="top-subtitle">Student: Asees Kaur Dham &bull; Roll No. 23102C0050</div>
+            </div>
+            <div>
+                <span class="status-pill status-review">Dev Port: 8081</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Metric Cards Row -->
+            <div class="stats-grid">
+                <div class="stat-card filed">
+                    <div class="stat-label">Newly Filed</div>
+                    <div class="stat-count">0</div>
+                </div>
+                <div class="stat-card review">
+                    <div class="stat-label">Under Review</div>
+                    <div class="stat-count">0</div>
+                </div>
+                <div class="stat-card hearing">
+                    <div class="stat-label">Hearing Scheduled</div>
+                    <div class="stat-count">0</div>
+                </div>
+                <div class="stat-card closed">
+                    <div class="stat-label">Closed &amp; Decreed</div>
+                    <div class="stat-count">0</div>
+                </div>
+            </div>
+
+            <!-- Main Status Card -->
+            <div class="card">
+                <div class="card-header-styled">
+                    <h2 class="serif-heading" style="font-size: 18px;">DevOps Environment &amp; Application Baseline</h2>
+                    <span class="status-pill status-closed">Active &bull; Java 17</span>
+                </div>
+                <p style="color: var(--text-muted); margin-bottom: 16px;">
+                    Welcome to the <strong>Legal Case Diary Portal</strong>. This Maven WAR package is configured for standalone deployment to 
+                    <strong>Apache Tomcat 10.1</strong> (Jakarta EE 10 at <code>C:\tomcat10</code>) as well as continuous delivery through 
+                    <strong>Jenkins</strong> (port 9090) and <strong>Docker Desktop</strong> (port 8082).
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 20px;">
+                    <div style="padding: 16px; background-color: var(--bg-card-subtle); border: 1px solid var(--border-editorial); border-radius: 3px;">
+                        <div style="font-weight: 600; font-size: 13px; color: var(--text-ink-navy); margin-bottom: 6px;">Runtime Specifications</div>
+                        <ul style="font-size: 13px; color: var(--text-muted); padding-left: 18px; line-height: 1.6;">
+                            <li><strong>Framework:</strong> Spring Boot 3.3.5 (Jakarta EE 10)</li>
+                            <li><strong>Artifact:</strong> <code>target/legal-diary.war</code></li>
+                            <li><strong>Database:</strong> H2 Persistent File Engine (<code>./data/casediary</code>)</li>
+                            <li><strong>Server Port:</strong> 8081 (Local Dev), 8080 (Tomcat 10.1)</li>
+                        </ul>
+                    </div>
+
+                    <div style="padding: 16px; background-color: var(--bg-card-subtle); border: 1px solid var(--border-editorial); border-radius: 3px;">
+                        <div style="font-weight: 600; font-size: 13px; color: var(--text-ink-navy); margin-bottom: 6px;">Security &amp; Workflow Rules</div>
+                        <ul style="font-size: 13px; color: var(--text-muted); padding-left: 18px; line-height: 1.6;">
+                            <li><strong>In-Memory Roles:</strong> <code>CLERK</code>, <code>LAWYER</code>, <code>ADMIN</code></li>
+                            <li><strong>State Lifecycle:</strong> Filed &rarr; Under Review &rarr; Hearing &rarr; Closed</li>
+                            <li><strong>Rule Enforcement:</strong> Only Admin can close; Lawyer reviews &amp; schedules</li>
+                            <li><strong>Styling:</strong> Bespoke handwritten CSS &bull; Zero Frameworks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
+
