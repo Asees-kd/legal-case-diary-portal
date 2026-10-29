@@ -158,32 +158,38 @@
 
 ```
 +------------------------------------+--------------------------+------------------------------------+
-|            TO DO (14)              |     IN PROGRESS (0)      |              DONE (1)              |
+|            TO DO (6)               |     IN PROGRESS (0)      |             DONE (9)               |
 +------------------------------------+--------------------------+------------------------------------+
-| [B-02] Architecture & System Design|                          | [B-01] Problem Definition &        |
-| [B-03] Maven Scaffolding (WAR)     |                          |        Requirements Specification  |
-| [B-04] Domain Entities & JPA Repos |                          |        (docs/01-problem-definition)|
-| [B-05] RBAC State Transition Engine|                          |                                    |
-| [B-06] Spring Security Config      |                          |                                    |
-| [B-07] MVC Web Controllers         |                          |                                    |
-| [B-08] Handwritten CSS Theme       |                          |                                    |
-| [B-09] Thymeleaf Views & Timeline  |                          |                                    |
-| [B-10] Automated Testing (JUnit 5 +|                          |                                    |
-|        8 Selenium Test Cases)      |                          |                                    |
-| [B-11] WAR Build & Tomcat Deploy   |                          |                                    |
-| [B-12] Git Version Control Setup   |                          |                                    |
-| [B-13] Jenkins Pipeline as Code    |                          |                                    |
-| [B-14] Docker Containerization     |                          |                                    |
-| [B-15] Ansible via WSL2 & Audit    |                          |                                    |
+| [B-10] Automated Testing (JUnit 5 +|                          | [B-01] Problem Definition &        |
+|        8 Selenium Test Cases)      |                          |        Requirements Specification  |
+| [B-11] WAR Build & Tomcat Deploy   |                          | [B-02] Architecture & System Design|
+| [B-13] Jenkins Pipeline as Code    |                          | [B-03] Maven Scaffolding (WAR)     |
+| [B-14] Docker Containerization     |                          | [B-04] Domain Entities & JPA Repos |
+| [B-15] Ansible via WSL2 & Audit    |                          | [B-05] RBAC State Transition Engine|
+|                                    |                          | [B-06] Spring Security Config      |
+|                                    |                          | [B-07] MVC Web Controllers         |
+|                                    |                          | [B-08] Handwritten CSS Theme       |
+|                                    |                          | [B-09] Thymeleaf Views & Timeline  |
+|                                    |                          | [B-12] Git Version Control Setup   |
 +------------------------------------+--------------------------+------------------------------------+
 ```
 
 ### Backlog Status Ledger:
 - **`B-01` Problem Definition & Requirements Specification:** **DONE** (Logged in `docs/01-problem-definition.md`).
-- **`B-02` Architecture & System Design Document:** **TO DO** (Next design deliverable).
-- **`B-03` to `B-09`:** **TO DO** (Scheduled across Sprint 1).
-- **`B-10` Automated Testing: JUnit 5 unit tests, plus Selenium WebDriver suite of 8 test cases (login valid/invalid, create case, case in list, update, search, role rule clerk cannot close/admin can, dashboard counts):** **TO DO** (Scheduled in Sprint 2).
-- **`B-11` to `B-15`:** **TO DO** (Scheduled in Sprint 2).
+- **`B-02` Architecture & System Design Document:** **DONE** (`docs/03-srs-architecture.md`, architecture/ER/use-case Mermaid diagrams committed in Task 3).
+- **`B-03` Maven Scaffolding (WAR):** **DONE** (Spring Boot 3.3.5, WAR packaging, `target/legal-diary.war` verified in Task 3).
+- **`B-04` Domain Entities & JPA Repos:** **DONE** (`LegalCase`, `CaseStatus`, `CaseType`, `CaseStatusHistory`, `CaseRepository`, `CaseStatusHistoryRepository` — committed in Task 5, PR #7).
+- **`B-05` RBAC State Transition Engine:** **DONE** (`CaseService`, `CaseServiceImpl` state machine FILED→UNDER_REVIEW→HEARING_SCHEDULED→CLOSED — committed in Task 5, PR #7).
+- **`B-06` Spring Security Config:** **DONE** (`SecurityConfig.java` with BCrypt in-memory users clerk/lawyer/admin and URL guards — Task 3 & Task 5).
+- **`B-07` MVC Web Controllers:** **DONE** (`CaseController`, `DashboardController`, `HomeController` with search, edit, status transition — Task 5 PR #7, Task 6 PR #8).
+- **`B-08` Handwritten CSS Design System:** **DONE** (`styles.css` with parchment/navy/brass/oxblood/sage palette, Source Serif 4 + Inter fonts — Task 5).
+- **`B-09` Thymeleaf Views & Timeline:** **DONE** (`cases.html`, `create.html`, `edit.html`, `detail.html`, `dashboard.html`, `fragments/layout.html` — Task 5 PR #7, Task 6 PR #8).
+- **`B-10` Automated Testing: JUnit 5 unit tests, plus Selenium WebDriver suite of 8 test cases (login valid/invalid, create case, case in list, update, search, role rule clerk cannot close/admin can, dashboard counts):** **TO DO** (JUnit 6 tests passing; Selenium suite scheduled in Task 9).
+- **`B-11` WAR Build & Tomcat Deploy:** **TO DO** (WAR confirmed at `target/legal-diary.war`; Tomcat deployment pipeline in Task 8).
+- **`B-12` Git Version Control Setup:** **DONE** (Repo initialized Task 4; branching strategy, PRs, tags, conflict resolution — Tasks 4–6).
+- **`B-13` Jenkins Pipeline as Code:** **TO DO** (Scheduled in Task 7–8).
+- **`B-14` Docker Containerization:** **TO DO** (Scheduled in Task 11–12).
+- **`B-15` Ansible via WSL2 & Audit:** **TO DO** (Scheduled in Task 13–14).
 
 ---
 
