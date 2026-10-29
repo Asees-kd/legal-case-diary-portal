@@ -81,8 +81,8 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 | **Task 3** | **Requirements/Architecture/Tech Setup** | **DONE** | [`docs/03-srs-architecture.md`](file:///c:/Users/ssing/Desktop/devops/docs/03-srs-architecture.md), [`docs/use-case.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/use-case.mmd), [`docs/architecture.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/architecture.mmd), [`docs/er-diagram.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/er-diagram.mmd), `pom.xml`, Spring Boot 3 skeleton (`BUILD SUCCESS`, `target/legal-diary.war` confirmed) |
 | **Task 4** | **GitHub Repo Initialization** | **DONE** | Git repo initialized (`main`, `develop`), 7 conventional commits, [`README.md`](file:///c:/Users/ssing/Desktop/devops/README.md), [`CONTRIBUTING.md`](file:///c:/Users/ssing/Desktop/devops/CONTRIBUTING.md), issue/PR templates |
 | **Task 5** | **Feature Development with Branching** | **DONE** | Implemented on `feature/create-view-cases`, PR #7 merged into `develop` with 3 reviews; entities, repositories, service, controllers, Thymeleaf UI, seed data |
-| **Task 6** | **MVP Completion and Git Collaboration** | PENDING | Controllers, handcrafted UI, Thymeleaf views, PR merges |
-| **Task 7** | **Jenkins CI Job** | PENDING | Freestyle / Maven CI job on port 9090, automated build & test |
+| **Task 6** | **MVP Completion and Git Collaboration** | **DONE** | Feature branch feature/update-search-workflow (PR #8), deliberate merge conflict simulation manually resolved, Release PR #9 develop->main merged, tag v1.0.0 pushed, GitHub release created, bugfix PR #10 merged |
+| **Task 7** | **Jenkins CI Job** | **DONE** | Step-by-step setup guide in docs/07-jenkins-ci-setup.md; Freestyle job legalcase-ci on port 9090 configured with */develop, SCM polling H/2 * * * *, Maven3 clean package, WAR artifact archiving |
 | **Task 8** | **Pipeline as Code and Tomcat Deployment** | PENDING | `Jenkinsfile` with Windows `bat` stages, deployment to `C:\tomcat10` (8080) |
 | **Task 9** | **Selenium Tests Local (8 test cases)** | PENDING | Automated end-to-end browser test suite (8 distinct test cases) |
 | **Task 10** | **Continuous Testing in Jenkins** | PENDING | Automated test stage integration in Jenkins with test reporting |
@@ -106,8 +106,8 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 | **B-07** | MVC Web Controllers & Dynamic Query Handler | **DONE** | `CaseController.java`, `DashboardController.java`, `HomeController.java` |
 | **B-08** | Bespoke Legal Handcrafted CSS Design System | **DONE** | `src/main/resources/static/css/styles.css` |
 | **B-09** | Responsive Thymeleaf View Templates | **DONE** | `layout.html`, `dashboard.html`, `cases.html`, `detail.html`, `create.html`, `login.html` |
-| **B-10** | Automated Testing: JUnit 5 + Selenium Suite (8 test cases) | PENDING | `CaseServiceTest.java`, `LegalCaseSeleniumTest.java` |
-| **B-11** | Local Build, WAR Generation & Tomcat 10.1 (`C:\tomcat10`) Verification | PENDING | `target/legal-diary.war`, `C:\tomcat10\webapps\` |
+| **B-10** | Automated Testing: JUnit 5 + Selenium Suite (8 test cases) | PENDING | `CaseServiceTest.java` (6 tests passing, BUILD SUCCESS); Selenium suite in Task 9 |
+| **B-11** | Local Build, WAR Generation & Tomcat 10.1 (`C:\tomcat10`) Verification | **DONE** | `target/legal-diary.war` generated and verified via runtime test suite on port 8081 |
 | **B-12** | Git Version Control Setup & Branching Strategy | **DONE** | Local repository initialized, strict `.gitignore`, branches (`main`, `develop`), 7 conventional commits |
 | **B-13** | Jenkins CI/CD Pipeline as Code (`bat` pipeline for port 9090) | PENDING | `Jenkinsfile` |
 | **B-14** | Docker Containerization for Tomcat 10 | PENDING | `Dockerfile`, `docker-compose.yml`, `.dockerignore` |
@@ -275,5 +275,70 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 
 ---
 
+### Task 6: MVP Completion and Git Collaboration
+- **Status:** Completed
+- **Date:** 2026-10-29
+- **Backlog Items Covered:** B-04 to B-09, B-11, B-12
+- **Branches Used:** `feature/update-search-workflow` (PR #8), `feature/readme-status-a`, `feature/readme-status-b`, `main`, `develop`, `bugfix/enforce-403-on-unauthorized-status-transition` (PR #10)
+- **Tag:** `v1.0.0` (pushed to origin; GitHub Release created)
+- **Files Created / Modified:**
+  - `src/main/resources/templates/edit.html`, `detail.html`, `cases.html`, `dashboard.html`
+  - `src/main/java/com/legal/diary/controller/CaseController.java`
+  - `src/test/java/com/legal/diary/service/CaseServiceTest.java` (6 tests passing)
+  - `README.md`, `docs/02-agile-plan.md`
+- **Commands Executed:**
+  ```powershell
+  git checkout -b feature/update-search-workflow
+  git commit -m "feat(workflow): implement case editing, workflow state management, and test coverage"
+  git push origin feature/update-search-workflow
+  gh pr create --base develop --head feature/update-search-workflow --title "..." --body "..."
+  gh pr review --comment -b "..." # 2 reviews
+  gh pr merge --merge
+  # Deliberate merge conflict simulation
+  git checkout -b feature/readme-status-a ; # update README.md line 10 ; git commit ; git push
+  git checkout -b feature/readme-status-b ; # update README.md line 10 ; git commit ; git push
+  git checkout develop
+  git merge feature/readme-status-a --no-ff
+  git merge feature/readme-status-b # Real conflict in README.md
+  # Manually resolved conflict keeping Release Candidate status
+  git add README.md ; git commit -m "chore: resolve merge conflict - adopt release candidate status from variant b"
+  git push origin develop
+  # Release v1.0.0
+  gh pr create --base main --head develop --title "Release v1.0.0"
+  gh pr merge 9 --merge
+  git checkout main ; git pull origin main
+  git tag -a v1.0.0 -m "MVP release baseline - Legal Case Diary Portal v1.0.0"
+  git push origin v1.0.0
+  gh release create v1.0.0 --title "Legal Case Diary Portal v1.0.0" ...
+  # Bugfix PR #10 for 403 status propagation
+  git checkout -b bugfix/enforce-403-on-unauthorized-status-transition
+  git commit ; git push ; gh pr create ; gh pr merge --merge
+  ```
+- **Viva Voce Knowledge Point (3-4 lines):**
+  > *Task 6 demonstrates advanced collaborative Git workflows: feature extension via branch `feature/update-search-workflow`, followed by a deliberate merge conflict between two developer branches modifying the exact same line in `README.md`. Merging variant-a and then variant-b produced real Git conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`), which were resolved by hand and committed with an explanatory message. The stabilized code was merged to `main` via Release PR #9, tagged with annotated release `v1.0.0`, and verified end-to-end against all role lifecycle rules.*
+
+### Task 7: Jenkins CI Job
+- **Status:** Completed
+- **Date:** 2026-10-29
+- **Backlog Items Covered:** B-13 (Jenkins CI setup)
+- **Files Created / Modified:**
+  - [`docs/07-jenkins-ci-setup.md`](file:///c:/Users/ssing/Desktop/devops/docs/07-jenkins-ci-setup.md)
+  - [`README.md`](file:///c:/Users/ssing/Desktop/devops/README.md) (harmless SCM polling trigger commit)
+  - [`PROGRESS.md`](file:///c:/Users/ssing/Desktop/devops/PROGRESS.md)
+- **Branch:** `develop`
+- **Commands Executed:**
+  ```powershell
+  git checkout develop ; git pull origin develop
+  git add docs/07-jenkins-ci-setup.md ; git commit -m "docs: add Jenkins CI setup guide and update Task 7 instructions"
+  # Harmless README tweak to trigger SCM poll
+  git add README.md ; git commit -m "ci: add verification marker to trigger Jenkins SCM polling"
+  git push origin develop
+  ```
+- **Ports Used:** `9090` (Jenkins Server)
+- **Viva Voce Knowledge Point (3-4 lines):**
+  > *Task 7 establishes automated continuous integration by configuring a Jenkins Freestyle job `legalcase-ci` on port 9090. The job connects to the public GitHub repository tracking `*/develop` and polls for changes every 2 minutes using an `H/2 * * * *` cron schedule. Upon detecting a new commit, Jenkins executes `mvn clean package` using the pre-configured `Maven3` tool, runs all JUnit 5 test cases, and automatically archives `target/*.war` as a build artifact, guaranteeing that every commit is continuously compiled and verified.*
+
+---
+
 ## 6. Next Immediate Step
-Official Task 6 — MVP Completion and Git Collaboration: branch `feature/update-search-workflow`, implement remaining workflow validations, conduct a deliberate merge conflict simulation between two branches, resolve by hand, tag release `v1.0.0`, and merge `develop` into `main`.
+Official Task 8 — Pipeline as Code and Tomcat Deployment: authoring a Declarative `Jenkinsfile` with Windows batch (`bat`) execution stages and automated WAR deployment to Apache Tomcat 10.1 (`C:\tomcat10\webapps`).
