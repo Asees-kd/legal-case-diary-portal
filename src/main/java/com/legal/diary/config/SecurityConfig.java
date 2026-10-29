@@ -2,6 +2,7 @@ package com.legal.diary.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -59,6 +60,12 @@ public class SecurityConfig {
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                 .requestMatchers("/login").permitAll()
                 .requestMatchers("/h2-console/**").hasRole("ADMIN")
+                // Case Creation: Only CLERK and ADMIN
+                .requestMatchers("/cases/new").hasAnyRole("CLERK", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/cases").hasAnyRole("CLERK", "ADMIN")
+                // Viewing Cases & Dashboard: CLERK, LAWYER, ADMIN
+                .requestMatchers("/cases", "/cases/**").authenticated()
+                .requestMatchers("/", "/dashboard").authenticated()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -84,4 +91,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
