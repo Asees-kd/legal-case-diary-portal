@@ -1,0 +1,68 @@
+flowchart TD
+    %% System Architecture & DevOps Deployment Topology
+    %% Palette: Navy (#14213D), Brass (#B08D3C), Parchment (#F7F4EE), Oxblood (#7A2E2E), Sage (#4F6F52)
+
+    subgraph CLIENT ["Client Tier"]
+        BROWSER["Web Browser\n(Inter & Source Serif 4 | Handwritten CSS)"]
+    end
+
+    subgraph APP_CONTAINER ["Apache Tomcat 10.1 (Jakarta EE 10 | Port 8080 / 8081)"]
+        direction TB
+        subgraph PRESENTATION ["Presentation Layer (Spring MVC 6)"]
+            AUTH_CTRL["AuthController\n(/login)"]
+            DASH_CTRL["DashboardController\n(/dashboard)"]
+            CASE_CTRL["CaseController\n(/cases/**)"]
+            THYMELEAF["Thymeleaf 3 Engine\n(Bespoke Legal Templates)"]
+        end
+
+        subgraph BUSINESS ["Business & Security Layer"]
+            SPRING_SEC["Spring Security 6\n(In-Memory RBAC: Clerk, Lawyer, Admin)"]
+            CASE_SVC["CaseService / CaseServiceImpl\n(Strict State Machine Validator)"]
+        end
+
+        subgraph PERSISTENCE ["Persistence Layer"]
+            SPRING_DATA["Spring Data JPA Repositories\n(CaseRepository, HistoryRepository)"]
+            HIBERNATE["Hibernate 6 ORM"]
+        end
+    end
+
+    subgraph DATA_STORAGE ["Storage Tier"]
+        H2_DB[("H2 Database Engine\n(Persistent File Mode: ./data/casediary)")]
+    end
+
+    subgraph DEVOPS ["DevOps & CI/CD Infrastructure"]
+        GIT_REPO["GitHub Repository\n(Git Branches: main, develop, feature/*)"]
+        JENKINS["Jenkins CI/CD Server\n(Port 9090 | Windows Batch Pipelines)"]
+        MAVEN["Apache Maven 3.9\n(Build, Test, Package WAR)"]
+        DOCKER["Docker Desktop & Hub\n(Port 8082 | aseeskaurd/legal-diary)"]
+        ANSIBLE["Ansible on WSL2 Ubuntu\n(User: asees | Target Port 8083)"]
+    end
+
+    %% Application Request Flow
+    BROWSER -->|HTTP Requests| SPRING_SEC
+    SPRING_SEC --> AUTH_CTRL & DASH_CTRL & CASE_CTRL
+    AUTH_CTRL & DASH_CTRL & CASE_CTRL --> CASE_SVC
+    CASE_CTRL --> THYMELEAF
+    THYMELEAF -->|Rendered HTML5| BROWSER
+    CASE_SVC --> SPRING_DATA
+    SPRING_DATA --> HIBERNATE
+    HIBERNATE --> H2_DB
+
+    %% DevOps Pipeline Flow
+    GIT_REPO -->|SCM Trigger| JENKINS
+    JENKINS -->|Executes bat| MAVEN
+    MAVEN -->|Produces WAR| APP_CONTAINER
+    MAVEN -->|Packages Image| DOCKER
+    JENKINS -->|Triggers Playbook| ANSIBLE
+    ANSIBLE -->|Manages Target| APP_CONTAINER
+
+    %% Styling
+    classDef navyBox fill:#14213D,stroke:#B08D3C,stroke-width:2px,color:#F7F4EE,font-family:Inter;
+    classDef parchmentBox fill:#F7F4EE,stroke:#14213D,stroke-width:1.5px,color:#14213D,font-family:Inter;
+    classDef brassBox fill:#B08D3C,stroke:#14213D,stroke-width:2px,color:#14213D,font-family:Inter,font-weight:bold;
+    classDef dbBox fill:#4F6F52,stroke:#14213D,stroke-width:2px,color:#F7F4EE,font-family:Inter;
+
+    class BROWSER,GIT_REPO,JENKINS,MAVEN,DOCKER,ANSIBLE navyBox;
+    class AUTH_CTRL,DASH_CTRL,CASE_CTRL,THYMELEAF,SPRING_SEC,CASE_SVC,SPRING_DATA,HIBERNATE parchmentBox;
+    class H2_DB dbBox;
+

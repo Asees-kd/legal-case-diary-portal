@@ -1,0 +1,32 @@
+erDiagram
+    %% Entity-Relationship Diagram for Legal Case Diary Portal
+    %% Palette: Navy (#14213D), Brass (#B08D3C), Parchment (#F7F4EE), Oxblood (#7A2E2E), Sage (#4F6F52)
+
+    LEGAL_CASES {
+        bigint id PK "Primary Key"
+        varchar case_number UK "Unique Docket Number"
+        varchar title "Matter Subject Brief"
+        varchar case_type "CIVIL, CRIMINAL, etc."
+        varchar court_name "Forum / Court Name"
+        varchar petitioner_name "Filing / Aggrieved Party"
+        varchar respondent_name "Defending / Counter Party"
+        varchar status "FILED, UNDER_REVIEW, etc."
+        date filed_date "Official Date of Filing"
+        date hearing_date "Next Scheduled Court Date"
+        text hearing_notes "Courtroom Directions & Bench"
+        timestamp created_at "Record Creation Timestamp"
+        timestamp updated_at "Record Last Modified Timestamp"
+    }
+
+    CASE_STATUS_HISTORY {
+        bigint id PK "Primary Key"
+        bigint case_id FK "Reference to legal_cases.id"
+        varchar from_status "Previous Case State"
+        varchar to_status "New Updated State"
+        varchar changed_by "Username (clerk, lawyer, admin)"
+        timestamp changed_at "Timestamp of Event"
+        varchar transition_notes "Optional State Notes"
+    }
+
+    LEGAL_CASES ||--o{ CASE_STATUS_HISTORY : "has lifecycle events"
+

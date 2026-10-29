@@ -1,0 +1,61 @@
+flowchart LR
+    %% Use Case Diagram for Legal Case Diary Portal
+    %% Palette: Navy (#14213D), Brass (#B08D3C), Parchment (#F7F4EE), Oxblood (#7A2E2E), Sage (#4F6F52)
+
+    subgraph ACTORS ["Chamber Actors & Roles"]
+        direction TB
+        CLERK["Court Clerk (CLERK)"]
+        LAWYER["Litigation Counsel (LAWYER)"]
+        ADMIN["Managing Partner (ADMIN)"]
+    end
+
+    subgraph USECASES ["Legal Case Diary Portal System"]
+        direction TB
+        UC_LOGIN(["UC-01: Authenticate & Login"])
+        UC_FILE(["UC-02: File New Legal Case"])
+        UC_SEARCH(["UC-03: Search & Filter Docket"])
+        UC_DETAIL(["UC-04: View Case Details & Brief"])
+        UC_TIMELINE(["UC-05: View Progression Timeline"])
+        UC_DASH(["UC-06: View Status Dashboard"])
+        UC_REVIEW(["UC-07: Advance to Under Review"])
+        UC_SCHEDULE(["UC-08: Schedule Court Hearing"])
+        UC_CLOSE(["UC-09: Close Legal Matter (Exclusive)"])
+    end
+
+    %% Clerk Connections
+    CLERK --> UC_LOGIN
+    CLERK --> UC_FILE
+    CLERK --> UC_SEARCH
+    CLERK --> UC_DETAIL
+    CLERK --> UC_TIMELINE
+    CLERK --> UC_DASH
+
+    %% Lawyer Connections
+    LAWYER --> UC_LOGIN
+    LAWYER --> UC_SEARCH
+    LAWYER --> UC_DETAIL
+    LAWYER --> UC_TIMELINE
+    LAWYER --> UC_DASH
+    LAWYER --> UC_REVIEW
+    LAWYER --> UC_SCHEDULE
+
+    %% Admin Connections (Full Authority)
+    ADMIN --> UC_LOGIN
+    ADMIN --> UC_FILE
+    ADMIN --> UC_SEARCH
+    ADMIN --> UC_DETAIL
+    ADMIN --> UC_TIMELINE
+    ADMIN --> UC_DASH
+    ADMIN --> UC_REVIEW
+    ADMIN --> UC_SCHEDULE
+    ADMIN --> UC_CLOSE
+
+    %% Styling
+    classDef actorStyle fill:#14213D,stroke:#B08D3C,stroke-width:2px,color:#F7F4EE,font-family:Inter;
+    classDef caseStyle fill:#F7F4EE,stroke:#14213D,stroke-width:1.5px,color:#14213D,font-family:Inter;
+    classDef exclusiveStyle fill:#F7F4EE,stroke:#7A2E2E,stroke-width:2.5px,color:#7A2E2E,font-family:Inter,font-weight:bold;
+
+    class CLERK,LAWYER,ADMIN actorStyle;
+    class UC_LOGIN,UC_FILE,UC_SEARCH,UC_DETAIL,UC_TIMELINE,UC_DASH,UC_REVIEW,UC_SCHEDULE caseStyle;
+    class UC_CLOSE exclusiveStyle;
+
