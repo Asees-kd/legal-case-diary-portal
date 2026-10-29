@@ -8,6 +8,7 @@
 - **Roll Number:** 23102C0050
 - **Course:** DevOps Engineering Lab / Project
 - **Workspace:** `C:\Users\ssing\Desktop\devops`
+- **Current Status:** MVP Release Candidate v1.0.0 (Stabilized Baseline)
 
 ---
 
