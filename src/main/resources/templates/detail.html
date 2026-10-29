@@ -29,7 +29,15 @@
                         &bull; Category: <span th:text="${caseItem.caseType.displayName}">Civil</span>
                     </div>
                 </div>
-                <div>
+                <div style="display: flex; gap: 8px;">
+                    <a th:if="${(isLawyer or isAdmin) and caseItem.status.name() != 'CLOSED'}"
+                       th:href="@{/cases/{id}/edit(id=${caseItem.id})}"
+                       class="btn btn-outline" style="font-size: 0.82rem;">
+                        <svg style="width: 13px; height: 13px; fill: currentColor;" viewBox="0 0 24 24">
+                            <path d="M3 17.25V21H6.75L17.81 9.94L14.06 6.19L3 17.25ZM20.71 7.04C21.1 6.65 21.1 6.02 20.71 5.63L18.37 3.29C17.98 2.9 17.35 2.9 16.96 3.29L15.13 5.12L18.88 8.87L20.71 7.04Z"/>
+                        </svg>
+                        Edit Details
+                    </a>
                     <a th:href="@{/cases}" class="btn btn-outline" style="font-size: 0.82rem;">
                         &larr; Back to Registry
                     </a>

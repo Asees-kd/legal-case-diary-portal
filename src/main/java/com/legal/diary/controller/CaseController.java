@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Controller managing legal case registration, search, case details,
- * and role-governed state transitions.
+ * editing, and role-governed state transitions.
  *
  * Student: Asees Kaur Dham (Roll No. 23102C0050)
  */
@@ -113,6 +113,39 @@ public class CaseController {
         model.addAttribute("activeNav", "cases");
 
         return "detail";
+    }
+
+    @GetMapping("/{id}/edit")
+    @PreAuthorize("hasAnyRole('LAWYER', 'ADMIN')")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        LegalCase legalCase = caseService.getCaseById(id)
+                .orElseThrow(() -> new NoSuchElementException("Legal case not found with ID: " + id));
+
+        model.addAttribute("legalCase", legalCase);
+        model.addAttribute("caseTypes", CaseType.values());
+        model.addAttribute("activeNav", "cases");
+        return "edit";
+    }
+
+    @PostMapping("/{id}/edit")
+    @PreAuthorize("hasAnyRole('LAWYER', 'ADMIN')")
+    public String processEditCase(@PathVariable("id") Long id,
+                                  @Valid @ModelAttribute("legalCase") LegalCase formCase,
+                                  BindingResult bindingResult,
+                                  Authentication auth,
+                                  RedirectAttributes redirectAttributes,
+                                  Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("caseTypes", CaseType.values());
+            model.addAttribute("activeNav", "cases");
+            return "edit";
+        }
+
+        String username = auth != null ? auth.getName() : "user";
+        LegalCase updated = caseService.updateCase(id, formCase, username);
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Case docket '" + updated.getCaseNumber() + "' updated successfully.");
+        return "redirect:/cases/" + id;
     }
 
     @PostMapping("/{id}/status")
