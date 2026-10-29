@@ -79,7 +79,7 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 | **Task 1** | **Problem Definition** | **DONE** | [`docs/01-problem-definition.md`](file:///c:/Users/ssing/Desktop/devops/docs/01-problem-definition.md) |
 | **Task 2** | **Agile Planning and DevOps Workflow** | **DONE** | [`docs/02-agile-plan.md`](file:///c:/Users/ssing/Desktop/devops/docs/02-agile-plan.md), [`docs/devops-lifecycle.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/devops-lifecycle.mmd), [`docs/02-kanban-setup-steps.md`](file:///c:/Users/ssing/Desktop/devops/docs/02-kanban-setup-steps.md) |
 | **Task 3** | **Requirements/Architecture/Tech Setup** | **DONE** | [`docs/03-srs-architecture.md`](file:///c:/Users/ssing/Desktop/devops/docs/03-srs-architecture.md), [`docs/use-case.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/use-case.mmd), [`docs/architecture.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/architecture.mmd), [`docs/er-diagram.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/er-diagram.mmd), `pom.xml`, Spring Boot 3 skeleton (`BUILD SUCCESS`, `target/legal-diary.war` confirmed) |
-| **Task 4** | **GitHub Repo Initialization** | PENDING | Local & remote repository initialization, `.gitignore`, initial commit |
+| **Task 4** | **GitHub Repo Initialization** | **DONE** | Git repo initialized (`main`, `develop`), 7 conventional commits, [`README.md`](file:///c:/Users/ssing/Desktop/devops/README.md), [`CONTRIBUTING.md`](file:///c:/Users/ssing/Desktop/devops/CONTRIBUTING.md), issue/PR templates |
 | **Task 5** | **Feature Development with Branching** | PENDING | Domain entities, service layer, security, feature branches |
 | **Task 6** | **MVP Completion and Git Collaboration** | PENDING | Controllers, handcrafted UI, Thymeleaf views, PR merges |
 | **Task 7** | **Jenkins CI Job** | PENDING | Freestyle / Maven CI job on port 9090, automated build & test |
@@ -108,7 +108,7 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 | **B-09** | Responsive Thymeleaf View Templates | PENDING | `layout.html`, `dashboard.html`, `cases.html`, `detail.html`, `create.html`, `login.html` |
 | **B-10** | Automated Testing: JUnit 5 + Selenium Suite (8 test cases) | PENDING | `CaseServiceTest.java`, `LegalCaseSeleniumTest.java` |
 | **B-11** | Local Build, WAR Generation & Tomcat 10.1 (`C:\tomcat10`) Verification | PENDING | `target/legal-diary.war`, `C:\tomcat10\webapps\` |
-| **B-12** | Git Version Control Setup & Branching Strategy | PENDING | Git repository initialization & branching |
+| **B-12** | Git Version Control Setup & Branching Strategy | **DONE** | Local repository initialized, strict `.gitignore`, branches (`main`, `develop`), 7 conventional commits |
 | **B-13** | Jenkins CI/CD Pipeline as Code (`bat` pipeline for port 9090) | PENDING | `Jenkinsfile` |
 | **B-14** | Docker Containerization for Tomcat 10 | PENDING | `Dockerfile`, `docker-compose.yml`, `.dockerignore` |
 | **B-15** | Ansible Automation via WSL2 (`asees` user) & Final Comprehensive Audit | PENDING | `ansible/playbook.yml`, `ansible/inventory` |
@@ -193,7 +193,58 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 - **Viva Voce Knowledge Point (3-4 lines):**
   > *Task 3 establishes the full technical foundation for the Legal Case Diary Portal. We authored a formal SRS document with 9 functional requirements (FR-01 to FR-09) and 6 non-functional requirements (NFR-01 to NFR-06), then designed a 3-tier architecture (Browser → Spring MVC Controller → Service → JPA Repository → H2 file DB). The Maven project skeleton uses WAR packaging for deployment on Tomcat 10.1 (Jakarta EE 10 / `jakarta.*` namespace), Spring Boot 3.3.5 with Java 17 source compilation, and a bespoke handcrafted CSS design system — the `mvn clean package` command confirmed BUILD SUCCESS producing `target/legal-diary.war`.*
 
+### Task 4: Git and GitHub Repository Initialization
+- **Status:** Completed (Local Repository & Governance Ready; Remote Push Pending Student GitHub Creation)
+- **Date:** 2026-10-29
+- **Backlog Items Covered:** B-12 (Git Version Control Setup & Branching Strategy)
+- **Files Created / Modified:**
+  - [`.gitignore`](file:///c:/Users/ssing/Desktop/devops/.gitignore) — verified strict rules excluding `target/`, `data/`, `*.log`, `.idea/`, `.vscode/`, `*.mv.db`, secrets
+  - [`README.md`](file:///c:/Users/ssing/Desktop/devops/README.md) — comprehensive project documentation, architecture, role workflow, local run commands, WAR packaging, and CI/CD summary
+  - [`CONTRIBUTING.md`](file:///c:/Users/ssing/Desktop/devops/CONTRIBUTING.md) — Git branching model (`main`, `develop`, `feature/*`), Conventional Commits specification, PR checklist
+  - [`.github/ISSUE_TEMPLATE/bug_report.md`](file:///c:/Users/ssing/Desktop/devops/.github/ISSUE_TEMPLATE/bug_report.md) — structured bug report template with role & port metadata
+  - [`.github/ISSUE_TEMPLATE/feature_request.md`](file:///c:/Users/ssing/Desktop/devops/.github/ISSUE_TEMPLATE/feature_request.md) — user story format feature request template
+  - [`.github/pull_request_template.md`](file:///c:/Users/ssing/Desktop/devops/.github/pull_request_template.md) — PR template with quality gates (Java 17, tests, design system)
+  - [`PROGRESS.md`](file:///c:/Users/ssing/Desktop/devops/PROGRESS.md) — updated milestone audit
+- **Git User Configured (Local):**
+  - Name: `Asees Kaur Dham`
+  - Email: `aseeskaurd@gmail.com`
+- **Branches Created:**
+  - `main` (active commit baseline)
+  - `develop` (created from `main` for ongoing feature integration)
+- **Commits Executed on `main` (7 Conventional Commits):**
+  1. `b8fdfa6 chore: initialize repository and configure strict gitignore`
+  2. `5f80354 docs: add problem definition, agile plan, and devops lifecycle diagram`
+  3. `afe9182 docs: add SRS specifications, system architecture diagrams, and Task 3 verification evidence`
+  4. `c7b17d4 chore: scaffold Spring Boot 3 Maven WAR project for Tomcat 10.1`
+  5. `49fe8dd feat: implement login page, security configuration, and bespoke UI system`
+  6. `2afe4ca docs: add project README and contributing guidelines`
+  7. `bf1dee7 chore: add GitHub issue and pull request templates`
+- **Commands Executed:**
+  ```powershell
+  git init -b main
+  git config user.name "Asees Kaur Dham"
+  git config user.email "aseeskaurd@gmail.com"
+  git add ... ; git commit -m ... # (7 commits)
+  git branch develop
+  git log --oneline --graph --all
+  git branch -a
+  ```
+- **Evidence Screenshots Required (take these after creating and pushing to GitHub):**
+  1. `04_git_log_local.png` — Terminal showing `git log --oneline --graph --all` with all 7 conventional commits.
+  2. `04_git_branches.png` — Terminal showing `git branch -a` with `main` and `develop`.
+  3. `04_github_repo_main.png` — Browser showing your GitHub repository page `legal-case-diary-portal` on `main` with `README.md` rendered.
+  4. `04_github_branches_view.png` — Browser showing branches dropdown or `/branches` page showing both `main` and `develop`.
+  5. `04_github_issues_created.png` — Browser showing the 3 GitHub issues created from the backlog.
+- **Manual Actions Required by Student:**
+  1. Create an EMPTY public GitHub repository named `legal-case-diary-portal` (no README, no .gitignore, no license).
+  2. Run `git remote add origin https://github.com/<your-username>/legal-case-diary-portal.git`.
+  3. Push branches: `git push -u origin main` and `git push -u origin develop`.
+  4. Create 3 GitHub issues from backlog items (`B-04`, `B-05`, `B-07`).
+  5. Capture the 5 evidence screenshots listed above.
+- **Viva Voce Knowledge Point (3-4 lines):**
+  > *Task 4 establishes the project's source code management and collaborative governance on Git and GitHub. We configured a dual-branch baseline (`main` for production releases, `develop` for active integration), enforced strict exclusion rules via `.gitignore` to prevent credential or build artifact leakage, and structured the initial codebase into 7 atomic Conventional Commits. Standardized issue and pull request templates enforce definition-of-done quality gates and traceability before code enters the CI/CD pipeline.*
+
 ---
 
 ## 6. Next Immediate Step
-Official Task 4 — GitHub Repo Initialization: run `git init`, make the initial commit, create the remote GitHub repository, push to `main`, and fill in the GitHub URL in `PROGRESS.md`.
+Official Task 5 — Feature Development with Branching: create domain entities (`LegalCase`, `CaseStatus`, `CaseType`, `CaseStatusHistory`), create repository layer, work on `feature/domain-model` branch, add/commit/push/pull/log, and submit a pull request into `develop`.
