@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{fragments/layout :: head(${caseItem.caseNumber} + ' Detail')}"></head>
+<body>
+
+<div class="app-layout">
+    <!-- Left Sidebar -->
+    <div th:replace="~{fragments/layout :: sidebar(${activeNav})}"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header th:replace="~{fragments/layout :: header('Case Dossier', 'Official Judicial Record & Proceedings Timeline')}"></header>
+
+        <!-- Flash Alerts -->
+        <div th:replace="~{fragments/layout :: alerts}"></div>
+
+        <!-- Case Header Card -->
+        <div class="card" style="margin-bottom: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                        <span class="status-pill status-review" style="font-family: monospace; font-size: 0.88rem;" th:text="${caseItem.caseNumber}">DL/HC/2026/0114</span>
+                        <span class="status-pill" th:classappend="${caseItem.status.badgeClass}" th:text="${caseItem.status.displayName}">Status</span>
+                        <span style="font-size: 0.82rem; color: var(--text-muted);">&bull; Filed on <span th:text="${#temporals.format(caseItem.filedDate, 'dd MMMM yyyy')}">Date</span></span>
+                    </div>
+                    <h2 class="serif-heading" style="font-size: 1.45rem; margin: 0 0 6px 0;" th:text="${caseItem.title}">Case Title</h2>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);">
+                        <strong style="color: var(--ink-navy);" th:text="${caseItem.courtName}">Court Name</strong>
+                        &bull; Category: <span th:text="${caseItem.caseType.displayName}">Civil</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <a th:if="${(isLawyer or isAdmin) and caseItem.status.name() != 'CLOSED'}"
+                       th:href="@{/cases/{id}/edit(id=${caseItem.id})}"
+                       class="btn btn-outline" style="font-size: 0.82rem;">
+                        <svg style="width: 13px; height: 13px; fill: currentColor;" viewBox="0 0 24 24">
+                            <path d="M3 17.25V21H6.75L17.81 9.94L14.06 6.19L3 17.25ZM20.71 7.04C21.1 6.65 21.1 6.02 20.71 5.63L18.37 3.29C17.98 2.9 17.35 2.9 16.96 3.29L15.13 5.12L18.88 8.87L20.71 7.04Z"/>
+                        </svg>
+                        Edit Details
+                    </a>
+                    <a th:href="@{/cases}" class="btn btn-outline" style="font-size: 0.82rem;">
+                        &larr; Back to Registry
+                    </a>
+                </div>
+            </div>
+
+            <!-- Parties Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                <div style="background-color: #FAF8F4; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--brass-gold); font-weight: 700;">Petitioner / Appellant</div>
+                    <div style="font-size: 1rem; font-weight: 600; color: var(--ink-navy); margin-top: 4px;" th:text="${caseItem.petitionerName}">Petitioner</div>
+                </div>
+                <div style="background-color: #FAF8F4; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 4px;">
+                    <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--oxblood-red); font-weight: 700;">Respondent / Defendant</div>
+                    <div style="font-size: 1rem; font-weight: 600; color: var(--ink-navy); margin-top: 4px;" th:text="${caseItem.respondentName}">Respondent</div>
+                </div>
+            </div>
+
+            <!-- Hearing & Bench Notes (if available) -->
+            <div th:if="${caseItem.hearingDate != null or (caseItem.hearingNotes != null and !caseItem.hearingNotes.isEmpty())}"
+                 style="margin-top: 16px; background-color: #FFFDF9; border: 1px solid var(--brass-gold); padding: 14px 18px; border-radius: 4px;">
+                <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                    <div th:if="${caseItem.hearingDate != null}">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--brass-gold); font-weight: 700;">Scheduled Hearing Date</div>
+                        <div style="font-size: 1.05rem; font-weight: 600; color: var(--ink-navy);" th:text="${#temporals.format(caseItem.hearingDate, 'EEEE, dd MMMM yyyy')}">Date</div>
+                    </div>
+                </div>
+                <div th:if="${caseItem.hearingNotes != null and !caseItem.hearingNotes.isEmpty()}" style="margin-top: 10px;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700;">Bench Notes &amp; Legal Directives</div>
+                    <p style="margin: 4px 0 0 0; font-size: 0.9rem; line-height: 1.5; color: var(--ink-navy);" th:text="${caseItem.hearingNotes}">Notes</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+            <!-- 4-Step Case Lifecycle Timeline -->
+            <div class="card">
+                <div class="card-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 18px;">
+                    <h3 class="serif-heading" style="font-size: 1.15rem; margin: 0;">Case Lifecycle Timeline</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 4px 0 0 0;">Strict workflow progression: Filed &rarr; Review &rarr; Hearing &rarr; Closed</p>
+                </div>
+
+                <div class="workflow-stepper">
+                    <!-- Step 1: FILED -->
+                    <div class="workflow-step"
+                         th:classappend="${caseItem.status.name() == 'FILED' ? 'step-current' : 'step-completed'}">
+                        <div class="step-marker">1</div>
+                        <div class="step-details">
+                            <div class="step-title">Matter Filed</div>
+                            <div class="step-meta">Initial docket registration in chamber ledger</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: UNDER_REVIEW -->
+                    <div class="workflow-step"
+                         th:classappend="${caseItem.status.name() == 'FILED' ? 'step-pending' : (caseItem.status.name() == 'UNDER_REVIEW' ? 'step-current' : 'step-completed')}">
+                        <div class="step-marker">2</div>
+                        <div class="step-details">
+                            <div class="step-title">Under Review</div>
+                            <div class="step-meta">Advocate review of pleadings &amp; evidence audit</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: HEARING_SCHEDULED -->
+                    <div class="workflow-step"
+                         th:classappend="${(caseItem.status.name() == 'FILED' or caseItem.status.name() == 'UNDER_REVIEW') ? 'step-pending' : (caseItem.status.name() == 'HEARING_SCHEDULED' ? 'step-current' : 'step-completed')}">
+                        <div class="step-marker">3</div>
+                        <div class="step-details">
+                            <div class="step-title">Hearing Scheduled</div>
+                            <div class="step-meta">Court fixture committed with bench notes</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: CLOSED -->
+                    <div class="workflow-step"
+                         th:classappend="${caseItem.status.name() == 'CLOSED' ? 'step-completed step-current' : 'step-pending'}">
+                        <div class="step-marker">4</div>
+                        <div class="step-details">
+                            <div class="step-title">Disposed &amp; Closed</div>
+                            <div class="step-meta">Final judgment passed; archived by Administrator</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Log Entries -->
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                    <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-navy); margin-bottom: 12px;">
+                        Audit Log Records (<span th:text="${histories.size()}">0</span>)
+                    </div>
+                    <div style="display: grid; gap: 10px;">
+                        <div th:each="h : ${histories}" style="font-size: 0.82rem; padding: 8px 12px; background: #FAF8F4; border-left: 3px solid var(--brass-gold); border-radius: 2px;">
+                            <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.75rem;">
+                                <span>Actor: <strong style="color: var(--ink-navy);" th:text="${h.changedBy}">user</strong></span>
+                                <span th:text="${#temporals.format(h.changedAt, 'dd MMM yyyy HH:mm')}">Date</span>
+                            </div>
+                            <div style="margin-top: 4px; font-weight: 600; color: var(--ink-navy);">
+                                <span th:if="${h.fromStatus != null}" th:text="${h.fromStatus.displayName} + ' &rarr; '">From &rarr; </span>
+                                <span th:text="${h.toStatus.displayName}">To</span>
+                            </div>
+                            <div th:if="${h.remarks != null}" style="color: var(--text-dark); margin-top: 2px; font-style: italic;" th:text="${h.remarks}">Remarks</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role-Based Action Transition Panel -->
+            <div class="card">
+                <div class="card-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 18px;">
+                    <h3 class="serif-heading" style="font-size: 1.15rem; margin: 0;">Workflow Action Authority</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 4px 0 0 0;">State transition permissions enforced by Spring Security RBAC</p>
+                </div>
+
+                <!-- State 1: FILED -> Can move to UNDER_REVIEW -->
+                <div th:if="${caseItem.status.name() == 'FILED'}">
+                    <div th:if="${isLawyer or isAdmin}" style="background-color: #FFFDF9; border: 1px solid var(--border-color); padding: 18px; border-radius: 4px;">
+                        <h4 style="font-size: 0.95rem; margin: 0 0 8px 0; color: var(--ink-navy);">Advance to Review Stage</h4>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;">
+                            As an assigned advocate (LAWYER) or ADMIN, acknowledge receipt of this filing and initiate formal pleadings audit.
+                        </p>
+                        <form th:action="@{/cases/{id}/status(id=${caseItem.id})}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="targetStatus" value="UNDER_REVIEW"/>
+                            <div class="form-group">
+                                <label class="form-label">Review Remarks (Optional)</label>
+                                <input type="text" name="remarks" class="form-control" placeholder="e.g. Scrutinizing petition index and authority list">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                                Initiate Review &amp; Pleadings Audit &rarr;
+                            </button>
+                        </form>
+                    </div>
+
+                    <div th:if="${isClerk and !isAdmin}" class="alert alert-info" style="margin: 0;">
+                        <span>Your filing role (CLERK) is complete. The docket is currently pending review by an Advocate (LAWYER) or Administrator (ADMIN).</span>
+                    </div>
+                </div>
+
+                <!-- State 2: UNDER_REVIEW -> Can move to HEARING_SCHEDULED -->
+                <div th:if="${caseItem.status.name() == 'UNDER_REVIEW'}">
+                    <div th:if="${isLawyer or isAdmin}" style="background-color: #FFFDF9; border: 1px solid var(--border-color); padding: 18px; border-radius: 4px;">
+                        <h4 style="font-size: 0.95rem; margin: 0 0 8px 0; color: var(--ink-navy);">Schedule Court Hearing</h4>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;">
+                            Specify the listing date fixed by the judicial forum, along with bench courtroom directives.
+                        </p>
+                        <form th:action="@{/cases/{id}/status(id=${caseItem.id})}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="targetStatus" value="HEARING_SCHEDULED"/>
+                            <div class="form-group">
+                                <label class="form-label">Hearing Date *</label>
+                                <input type="date" name="hearingDate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bench Directives &amp; Notes</label>
+                                <textarea name="hearingNotes" rows="3" class="form-control" placeholder="e.g. Courtroom 4, admission stage arguments on interim stay application."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                                Commit Hearing Schedule &rarr;
+                            </button>
+                        </form>
+                    </div>
+
+                    <div th:if="${isClerk and !isAdmin}" class="alert alert-info" style="margin: 0;">
+                        <span>Matter is under scrutiny by legal counsel. Only LAWYER or ADMIN can fix a hearing date.</span>
+                    </div>
+                </div>
+
+                <!-- State 3: HEARING_SCHEDULED -> Only ADMIN can move to CLOSED -->
+                <div th:if="${caseItem.status.name() == 'HEARING_SCHEDULED'}">
+                    <div th:if="${isAdmin}" style="background-color: #FFFDF9; border: 1px solid var(--oxblood-red); padding: 18px; border-radius: 4px;">
+                        <h4 style="font-size: 0.95rem; margin: 0 0 8px 0; color: var(--oxblood-red);">Formal Case Closure [ADMIN Exclusive]</h4>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin-bottom: 14px;">
+                            Final disposition and archival authority is strictly reserved for Managing Partners (ROLE_ADMIN).
+                        </p>
+                        <form th:action="@{/cases/{id}/status(id=${caseItem.id})}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <input type="hidden" name="targetStatus" value="CLOSED"/>
+                            <div class="form-group">
+                                <label class="form-label">Disposal Remarks / Final Decree Details *</label>
+                                <textarea name="remarks" rows="3" class="form-control" placeholder="e.g. Disposed as settled via consent terms decree dated 29 Oct 2026." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger" style="width: 100%; justify-content: center;">
+                                Dispose &amp; Close Case Permanently
+                            </button>
+                        </form>
+                    </div>
+
+                    <div th:if="${!isAdmin}" class="alert alert-warning" style="margin: 0;">
+                        <span>This case is currently listed for hearing. <strong>Only the Chamber Administrator (ADMIN)</strong> has exclusive authorization to close or dispose of a case matter.</span>
+                    </div>
+                </div>
+
+                <!-- State 4: CLOSED -> Concluded -->
+                <div th:if="${caseItem.status.name() == 'CLOSED'}" style="text-align: center; padding: 32px 16px; background-color: #FAF8F4; border-radius: 4px;">
+                    <svg style="width: 42px; height: 42px; fill: var(--sage-green); margin-bottom: 8px;" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"/>
+                    </svg>
+                    <h4 class="serif-heading" style="margin: 0; color: var(--ink-navy); font-size: 1.15rem;">Case Disposed &amp; Archived</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 6px 0 0 0;">
+                        This legal matter has reached final closure. The record is permanently preserved in the registry archive.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{fragments/layout :: head('File New Case')}"></head>
+<body>
+
+<div class="app-layout">
+    <!-- Left Sidebar -->
+    <div th:replace="~{fragments/layout :: sidebar(${activeNav})}"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header th:replace="~{fragments/layout :: header('Register Legal Matter', 'Formal Intake of Case Docket into Chamber Registry')}"></header>
+
+        <!-- Flash Alerts -->
+        <div th:replace="~{fragments/layout :: alerts}"></div>
+
+        <div style="max-width: 850px;">
+            <div class="card">
+                <div class="card-header" style="border-bottom: 1px solid var(--border-color); padding-bottom: 14px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2 class="serif-heading" style="font-size: 1.25rem; margin: 0;">Case Filing Requisition</h2>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 4px 0 0 0;">
+                                Initial matter intake automatically allocates the case to status <strong>FILED</strong>.
+                            </p>
+                        </div>
+                        <a th:href="@{/cases}" class="btn btn-outline" style="font-size: 0.82rem;">
+                            &larr; Back to Registry
+                        </a>
+                    </div>
+                </div>
+
+                <form th:action="@{/cases}" th:object="${legalCase}" method="post">
+                    <!-- CSRF Token -->
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px;">
+                        <!-- Case Number -->
+                        <div class="form-group">
+                            <label for="caseNumber" class="form-label">Docket / Case Number *</label>
+                            <input type="text" id="caseNumber" th:field="*{caseNumber}" class="form-control"
+                                   placeholder="e.g. DL/HC/2026/0491" required>
+                            <div th:if="${#fields.hasErrors('caseNumber')}" class="form-error" th:errors="*{caseNumber}">
+                                Case number error
+                            </div>
+                            <small style="color: var(--text-muted); font-size: 0.75rem;">Must be unique across the judicial register.</small>
+                        </div>
+
+                        <!-- Case Category / Type -->
+                        <div class="form-group">
+                            <label for="caseType" class="form-label">Jurisdictional Category *</label>
+                            <select id="caseType" th:field="*{caseType}" class="form-control" required>
+                                <option value="">-- Select Category --</option>
+                                <option th:each="type : ${caseTypes}" th:value="${type}" th:text="${type.displayName}">Civil</option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('caseType')}" class="form-error" th:errors="*{caseType}">
+                                Category error
+                            </div>
+                        </div>
+
+                        <!-- Case Title -->
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="title" class="form-label">Case Caption / Cause Title *</label>
+                            <input type="text" id="title" th:field="*{title}" class="form-control"
+                                   placeholder="e.g. Union of India vs. ABC Logistics Consortium" required>
+                            <div th:if="${#fields.hasErrors('title')}" class="form-error" th:errors="*{title}">
+                                Title error
+                            </div>
+                        </div>
+
+                        <!-- Court Name -->
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="courtName" class="form-label">Court / Judicial Forum *</label>
+                            <input type="text" id="courtName" th:field="*{courtName}" class="form-control"
+                                   placeholder="e.g. Supreme Court of India, Courtroom 1" required>
+                            <div th:if="${#fields.hasErrors('courtName')}" class="form-error" th:errors="*{courtName}">
+                                Court name error
+                            </div>
+                        </div>
+
+                        <!-- Petitioner -->
+                        <div class="form-group">
+                            <label for="petitionerName" class="form-label">Petitioner / Appellant *</label>
+                            <input type="text" id="petitionerName" th:field="*{petitionerName}" class="form-control"
+                                   placeholder="Name of petitioning party" required>
+                            <div th:if="${#fields.hasErrors('petitionerName')}" class="form-error" th:errors="*{petitionerName}">
+                                Petitioner error
+                            </div>
+                        </div>
+
+                        <!-- Respondent -->
+                        <div class="form-group">
+                            <label for="respondentName" class="form-label">Respondent / Defendant *</label>
+                            <input type="text" id="respondentName" th:field="*{respondentName}" class="form-control"
+                                   placeholder="Name of responding party" required>
+                            <div th:if="${#fields.hasErrors('respondentName')}" class="form-error" th:errors="*{respondentName}">
+                                Respondent error
+                            </div>
+                        </div>
+
+                        <!-- Filed Date -->
+                        <div class="form-group">
+                            <label for="filedDate" class="form-label">Official Filing Date *</label>
+                            <input type="date" id="filedDate" th:field="*{filedDate}" class="form-control" required>
+                            <div th:if="${#fields.hasErrors('filedDate')}" class="form-error" th:errors="*{filedDate}">
+                                Filing date error
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 12px;">
+                        <a th:href="@{/cases}" class="btn btn-outline">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24">
+                                <path d="M19 13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </svg>
+                            Register &amp; File Matter
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

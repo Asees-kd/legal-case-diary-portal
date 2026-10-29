@@ -80,7 +80,7 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 | **Task 2** | **Agile Planning and DevOps Workflow** | **DONE** | [`docs/02-agile-plan.md`](file:///c:/Users/ssing/Desktop/devops/docs/02-agile-plan.md), [`docs/devops-lifecycle.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/devops-lifecycle.mmd), [`docs/02-kanban-setup-steps.md`](file:///c:/Users/ssing/Desktop/devops/docs/02-kanban-setup-steps.md) |
 | **Task 3** | **Requirements/Architecture/Tech Setup** | **DONE** | [`docs/03-srs-architecture.md`](file:///c:/Users/ssing/Desktop/devops/docs/03-srs-architecture.md), [`docs/use-case.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/use-case.mmd), [`docs/architecture.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/architecture.mmd), [`docs/er-diagram.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/er-diagram.mmd), `pom.xml`, Spring Boot 3 skeleton (`BUILD SUCCESS`, `target/legal-diary.war` confirmed) |
 | **Task 4** | **GitHub Repo Initialization** | **DONE** | Git repo initialized (`main`, `develop`), 7 conventional commits, [`README.md`](file:///c:/Users/ssing/Desktop/devops/README.md), [`CONTRIBUTING.md`](file:///c:/Users/ssing/Desktop/devops/CONTRIBUTING.md), issue/PR templates |
-| **Task 5** | **Feature Development with Branching** | PENDING | Domain entities, service layer, security, feature branches |
+| **Task 5** | **Feature Development with Branching** | **DONE** | Implemented on `feature/create-view-cases`, PR #7 merged into `develop` with 3 reviews; entities, repositories, service, controllers, Thymeleaf UI, seed data |
 | **Task 6** | **MVP Completion and Git Collaboration** | PENDING | Controllers, handcrafted UI, Thymeleaf views, PR merges |
 | **Task 7** | **Jenkins CI Job** | PENDING | Freestyle / Maven CI job on port 9090, automated build & test |
 | **Task 8** | **Pipeline as Code and Tomcat Deployment** | PENDING | `Jenkinsfile` with Windows `bat` stages, deployment to `C:\tomcat10` (8080) |
@@ -100,12 +100,12 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 | **B-01** | Problem Definition & Requirements Specification | **DONE** | [`docs/01-problem-definition.md`](file:///c:/Users/ssing/Desktop/devops/docs/01-problem-definition.md) |
 | **B-02** | Architecture & System Design Document | **DONE** | [`docs/03-srs-architecture.md`](file:///c:/Users/ssing/Desktop/devops/docs/03-srs-architecture.md), [`docs/use-case.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/use-case.mmd), [`docs/architecture.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/architecture.mmd), [`docs/er-diagram.mmd`](file:///c:/Users/ssing/Desktop/devops/docs/er-diagram.mmd) |
 | **B-03** | Maven Project Scaffolding & Configuration (WAR, Java 17, Tomcat 10) | **DONE** | `pom.xml`, `.gitignore`, `src/` skeleton, `target/legal-diary.war` (BUILD SUCCESS) |
-| **B-04** | Domain Entities, Enums & JPA Repositories | PENDING | `LegalCase.java`, `CaseStatus.java`, `CaseType.java`, `CaseRepository.java` |
-| **B-05** | Business Logic Service & Strict RBAC State Transition Rules | PENDING | `CaseService.java`, `CaseServiceImpl.java` |
-| **B-06** | Spring Security Configuration & In-Memory RBAC Setup | PENDING | `SecurityConfig.java` |
-| **B-07** | MVC Web Controllers & Dynamic Query Handler | PENDING | `CaseController.java`, `DashboardController.java`, `AuthController.java` |
-| **B-08** | Bespoke Legal Handcrafted CSS Design System | PENDING | `src/main/resources/static/css/styles.css` |
-| **B-09** | Responsive Thymeleaf View Templates | PENDING | `layout.html`, `dashboard.html`, `cases.html`, `detail.html`, `create.html`, `login.html` |
+| **B-04** | Domain Entities, Enums & JPA Repositories | **DONE** | `LegalCase.java`, `CaseStatus.java`, `CaseType.java`, `CaseRepository.java` |
+| **B-05** | Business Logic Service & Strict RBAC State Transition Rules | **DONE** | `CaseService.java`, `CaseServiceImpl.java` |
+| **B-06** | Spring Security Configuration & In-Memory RBAC Setup | **DONE** | `SecurityConfig.java` |
+| **B-07** | MVC Web Controllers & Dynamic Query Handler | **DONE** | `CaseController.java`, `DashboardController.java`, `HomeController.java` |
+| **B-08** | Bespoke Legal Handcrafted CSS Design System | **DONE** | `src/main/resources/static/css/styles.css` |
+| **B-09** | Responsive Thymeleaf View Templates | **DONE** | `layout.html`, `dashboard.html`, `cases.html`, `detail.html`, `create.html`, `login.html` |
 | **B-10** | Automated Testing: JUnit 5 + Selenium Suite (8 test cases) | PENDING | `CaseServiceTest.java`, `LegalCaseSeleniumTest.java` |
 | **B-11** | Local Build, WAR Generation & Tomcat 10.1 (`C:\tomcat10`) Verification | PENDING | `target/legal-diary.war`, `C:\tomcat10\webapps\` |
 | **B-12** | Git Version Control Setup & Branching Strategy | **DONE** | Local repository initialized, strict `.gitignore`, branches (`main`, `develop`), 7 conventional commits |
@@ -244,7 +244,36 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 - **Viva Voce Knowledge Point (3-4 lines):**
   > *Task 4 establishes the project's source code management and collaborative governance on Git and GitHub. We configured a dual-branch baseline (`main` for production releases, `develop` for active integration), enforced strict exclusion rules via `.gitignore` to prevent credential or build artifact leakage, and structured the initial codebase into 7 atomic Conventional Commits. Standardized issue and pull request templates enforce definition-of-done quality gates and traceability before code enters the CI/CD pipeline.*
 
+### Task 5: Feature Development with Branching
+- **Status:** Completed
+- **Date:** 2026-10-29
+- **Backlog Items Covered:** B-04 (Domain Entities), B-05 (Business Service), B-06 (Security RBAC), B-07 (Controllers & Search), B-08 (Design System), B-09 (Thymeleaf Templates)
+- **Branches Used:** `feature/create-view-cases` branched from `develop`, merged via GitHub PR #7 into `develop`
+- **Files Created / Modified:**
+  - `src/main/java/com/legal/diary/model/CaseStatus.java`, `CaseType.java`, `LegalCase.java`, `CaseStatusHistory.java`
+  - `src/main/java/com/legal/diary/repository/CaseRepository.java`, `CaseStatusHistoryRepository.java`
+  - `src/main/java/com/legal/diary/service/CaseService.java`, `CaseServiceImpl.java`
+  - `src/main/java/com/legal/diary/config/DataInitializer.java` (6 seed cases)
+  - `src/main/java/com/legal/diary/controller/CaseController.java`, `DashboardController.java`
+  - `src/main/resources/templates/fragments/layout.html`, `cases.html`, `create.html`, `dashboard.html`, `detail.html`
+  - `src/main/resources/static/css/styles.css`
+  - `src/test/java/com/legal/diary/service/CaseServiceTest.java`
+- **Commands Executed:**
+  ```powershell
+  git checkout develop ; git pull origin develop
+  git checkout -b feature/create-view-cases
+  # 5 conventional commits
+  mvn.cmd clean package # BUILD SUCCESS (5 tests pass)
+  git push -u origin feature/create-view-cases
+  gh pr create --base develop --head feature/create-view-cases --title "..." --body "..."
+  gh pr review --comment -b "..." # (3 review comments added)
+  gh pr merge --merge
+  git checkout develop ; git pull origin develop
+  ```
+- **Viva Voce Knowledge Point (3-4 lines):**
+  > *Task 5 demonstrates the Git feature-branching workflow for collaborative development. All case registration and view capabilities were developed on an isolated `feature/create-view-cases` branch with small atomic Conventional Commits. A Pull Request (#7) was submitted targeting `develop`, peer-reviewed with 3 technical comments validating Jakarta EE annotations and RBAC restrictions, and integrated via a formal merge commit preserving non-linear branch history.*
+
 ---
 
 ## 6. Next Immediate Step
-Official Task 5 — Feature Development with Branching: create domain entities (`LegalCase`, `CaseStatus`, `CaseType`, `CaseStatusHistory`), create repository layer, work on `feature/domain-model` branch, add/commit/push/pull/log, and submit a pull request into `develop`.
+Official Task 6 — MVP Completion and Git Collaboration: branch `feature/update-search-workflow`, implement remaining workflow validations, conduct a deliberate merge conflict simulation between two branches, resolve by hand, tag release `v1.0.0`, and merge `develop` into `main`.

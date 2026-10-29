@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+
+<div class="app-layout">
+    <!-- Left Sidebar -->
+    <div th:replace="~{fragments/layout :: sidebar(${activeNav})}"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header th:replace="~{fragments/layout :: header('Chamber Dashboard', 'Executive Overview & Hearing Calendar')}"></header>
+
+        <!-- Flash Alerts -->
+        <div th:replace="~{fragments/layout :: alerts}"></div>
+
+        <!-- Metric Summary Cards -->
+        <div class="metric-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; margin-bottom: 28px;">
+            <!-- Total Cases -->
+            <div class="card metric-card" style="border-left: 4px solid var(--ink-navy);">
+                <div class="metric-label">Total Registered Matters</div>
+                <div class="metric-value serif-heading" style="font-size: 2.2rem; color: var(--ink-navy); margin-top: 6px;" th:text="${totalCases}">0</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Active in chamber database</div>
+            </div>
+
+            <!-- Filed -->
+            <div class="card metric-card" style="border-left: 4px solid var(--sage-green);">
+                <div class="metric-label" style="color: var(--sage-green);">Filed (Intake)</div>
+                <div class="metric-value serif-heading" style="font-size: 2.2rem; color: var(--sage-green); margin-top: 6px;"
+                     th:text="${counts.get(T(com.legal.diary.model.CaseStatus).FILED)}">0</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Pending advocate review</div>
+            </div>
+
+            <!-- Under Review -->
+            <div class="card metric-card" style="border-left: 4px solid var(--brass-gold);">
+                <div class="metric-label" style="color: var(--brass-gold);">Under Scrutiny</div>
+                <div class="metric-value serif-heading" style="font-size: 2.2rem; color: var(--brass-gold); margin-top: 6px;"
+                     th:text="${counts.get(T(com.legal.diary.model.CaseStatus).UNDER_REVIEW)}">0</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Pleadings audit in progress</div>
+            </div>
+
+            <!-- Hearing Scheduled -->
+            <div class="card metric-card" style="border-left: 4px solid #2B4C7E;">
+                <div class="metric-label" style="color: #2B4C7E;">Hearing Scheduled</div>
+                <div class="metric-value serif-heading" style="font-size: 2.2rem; color: #2B4C7E; margin-top: 6px;"
+                     th:text="${counts.get(T(com.legal.diary.model.CaseStatus).HEARING_SCHEDULED)}">0</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Listed before judicial bench</div>
+            </div>
+
+            <!-- Closed -->
+            <div class="card metric-card" style="border-left: 4px solid var(--oxblood-red);">
+                <div class="metric-label" style="color: var(--oxblood-red);">Disposed &amp; Closed</div>
+                <div class="metric-value serif-heading" style="font-size: 2.2rem; color: var(--oxblood-red); margin-top: 6px;"
+                     th:text="${counts.get(T(com.legal.diary.model.CaseStatus).CLOSED)}">0</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Concluded &amp; archived</div>
+            </div>
+        </div>
+
+        <!-- Upcoming Hearings Section -->
+        <div class="card" style="margin-bottom: 24px; padding: 0; overflow: hidden;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color);">
+                <div>
+                    <h2 class="serif-heading" style="font-size: 1.2rem; margin: 0;">Upcoming Court Hearings</h2>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin: 2px 0 0 0;">Next judicial listings sorted chronologically</p>
+                </div>
+                <a th:href="@{/cases}" class="btn btn-outline" style="font-size: 0.82rem;">
+                    View Complete Registry &rarr;
+                </a>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Hearing Date</th>
+                            <th>Case Number</th>
+                            <th>Case Caption</th>
+                            <th>Court &amp; Jurisdiction</th>
+                            <th>Bench Notes / Directives</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="h : ${upcomingHearings}">
+                            <td style="white-space: nowrap;">
+                                <div style="font-weight: 700; color: var(--ink-navy);" th:text="${#temporals.format(h.hearingDate, 'dd MMM yyyy')}">Date</div>
+                                <div style="font-size: 0.75rem; color: var(--brass-gold); text-transform: uppercase;" th:text="${#temporals.format(h.hearingDate, 'EEEE')}">Day</div>
+                            </td>
+                            <td>
+                                <a th:href="@{/cases/{id}(id=${h.id})}" class="case-number-link" th:text="${h.caseNumber}">
+                                    Number
+                                </a>
+                            </td>
+                            <td>
+                                <div style="font-weight: 600; color: var(--ink-navy);" th:text="${h.title}">Title</div>
+                                <div style="font-size: 0.78rem; color: var(--text-muted);" th:text="${h.caseType.displayName}">Category</div>
+                            </td>
+                            <td th:text="${h.courtName}">Court</td>
+                            <td style="font-size: 0.82rem; max-width: 280px; color: var(--text-dark);">
+                                <span th:if="${h.hearingNotes != null and !h.hearingNotes.isEmpty()}" th:text="${h.hearingNotes}">Notes</span>
+                                <span th:if="${h.hearingNotes == null or h.hearingNotes.isEmpty()}" style="color: var(--text-muted); font-style: italic;">No specific directives logged</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <a th:href="@{/cases/{id}(id=${h.id})}" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.8rem;">
+                                    View Dossier
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${upcomingHearings.empty}">
+                            <td colspan="6" style="text-align: center; padding: 36px 20px; color: var(--text-muted);">
+                                <div style="font-size: 0.95rem;">No court hearings are currently scheduled in the docket.</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
