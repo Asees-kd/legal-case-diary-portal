@@ -8,6 +8,7 @@
 - **Roll Number:** 23102C0050
 - **Course:** DevOps Engineering Lab / Project
 - **Workspace:** `C:\Users\ssing\Desktop\devops`
+- **Current Status:** In Active Development (Sprint 1 Feature Baseline)
 
 ---
 
