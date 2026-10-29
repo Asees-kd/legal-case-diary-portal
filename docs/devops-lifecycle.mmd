@@ -1,0 +1,35 @@
+flowchart LR
+    %% DevOps Infinity Lifecycle for Legal Case Diary Portal
+    %% Palette: Navy (#14213D), Brass (#B08D3C), Parchment (#F7F4EE)
+
+    subgraph DEV ["Dev Phase (Development)"]
+        direction LR
+        P["Plan: GitHub Projects"]
+        C["Code: Git & GitHub"]
+        B["Build: Apache Maven"]
+        T["Test: Selenium & JUnit 5"]
+    end
+
+    subgraph OPS ["Ops Phase (Operations)"]
+        direction LR
+        R["Release: Jenkins & Docker Hub"]
+        D["Deploy: Tomcat 10.1 & Docker"]
+        O["Operate: Ansible (WSL2)"]
+        M["Monitor: Health Checks & Logs"]
+    end
+
+    P --> C
+    C --> B
+    B --> T
+    T --> R
+    R --> D
+    D --> O
+    O --> M
+    M --> P
+
+    classDef devopsNode fill:#14213D,stroke:#B08D3C,stroke-width:2px,color:#F7F4EE,font-family:Inter;
+    classDef clusterStyle fill:#F7F4EE,stroke:#14213D,stroke-width:1.5px,color:#14213D,font-family:Inter;
+
+    class P,C,B,T,R,D,O,M devopsNode;
+    class DEV,OPS clusterStyle;
+
