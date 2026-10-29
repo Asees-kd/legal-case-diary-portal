@@ -163,7 +163,7 @@ public class CaseController {
             redirectAttributes.addFlashAttribute("successMessage",
                     "Case workflow updated successfully to " + targetStatus.getDisplayName() + ".");
         } catch (AccessDeniedException ex) {
-            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+            throw ex;
         } catch (IllegalArgumentException | IllegalStateException ex) {
             redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         }
