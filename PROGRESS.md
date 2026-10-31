@@ -83,7 +83,7 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 | **Task 5** | **Feature Development with Branching** | **DONE** | Implemented on `feature/create-view-cases`, PR #7 merged into `develop` with 3 reviews; entities, repositories, service, controllers, Thymeleaf UI, seed data |
 | **Task 6** | **MVP Completion and Git Collaboration** | **DONE** | Feature branch feature/update-search-workflow (PR #8), deliberate merge conflict simulation manually resolved, Release PR #9 develop->main merged, tag v1.0.0 pushed, GitHub release created, bugfix PR #10 merged |
 | **Task 7** | **Jenkins CI Job** | **DONE** | Step-by-step setup guide in docs/07-jenkins-ci-setup.md; Freestyle job legalcase-ci on port 9090 configured with */develop, SCM polling H/2 * * * *, Maven3 clean package, WAR artifact archiving |
-| **Task 8** | **Pipeline as Code and Tomcat Deployment** | PENDING | `Jenkinsfile` with Windows `bat` stages, deployment to `C:\tomcat10` (8080) |
+| **Task 8** | **Pipeline as Code and Tomcat Deployment** | **DONE** | [`Jenkinsfile`](file:///c:/Users/lenovo/Desktop/devops/Jenkinsfile), [`docs/08-pipeline-setup.md`](file:///c:/Users/lenovo/Desktop/devops/docs/08-pipeline-setup.md), automated Tomcat 10.1 deployment & health verification |
 | **Task 9** | **Selenium Tests Local (8 test cases)** | PENDING | Automated end-to-end browser test suite (8 distinct test cases) |
 | **Task 10** | **Continuous Testing in Jenkins** | PENDING | Automated test stage integration in Jenkins with test reporting |
 | **Task 11** | **Docker Image and Container Lifecycle** | PENDING | `Dockerfile`, container build, port 8082 run, Docker Hub push (`aseeskaurd`) |
@@ -109,7 +109,7 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 | **B-10** | Automated Testing: JUnit 5 + Selenium Suite (8 test cases) | PENDING | `CaseServiceTest.java` (6 tests passing, BUILD SUCCESS); Selenium suite in Task 9 |
 | **B-11** | Local Build, WAR Generation & Tomcat 10.1 (`C:\tomcat10`) Verification | **DONE** | `target/legal-diary.war` generated and verified via runtime test suite on port 8081 |
 | **B-12** | Git Version Control Setup & Branching Strategy | **DONE** | Local repository initialized, strict `.gitignore`, branches (`main`, `develop`), 7 conventional commits |
-| **B-13** | Jenkins CI/CD Pipeline as Code (`bat` pipeline for port 9090) | PENDING | `Jenkinsfile` |
+| **B-13** | Jenkins CI/CD Pipeline as Code (`bat` pipeline for port 9090) | **DONE** | `Jenkinsfile` (Declarative, Windows `bat` stages, automated Tomcat deployment) |
 | **B-14** | Docker Containerization for Tomcat 10 | PENDING | `Dockerfile`, `docker-compose.yml`, `.dockerignore` |
 | **B-15** | Ansible Automation via WSL2 (`asees` user) & Final Comprehensive Audit | PENDING | `ansible/playbook.yml`, `ansible/inventory` |
 
@@ -340,5 +340,33 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 
 ---
 
+### Task 8: Pipeline as Code and Tomcat Deployment
+- **Status:** Completed
+- **Date:** 2026-10-31
+- **Backlog Items Covered:** B-13 (Jenkins CI/CD Pipeline as Code)
+- **Files Created / Modified:**
+  - [`Jenkinsfile`](file:///c:/Users/lenovo/Desktop/devops/Jenkinsfile) — Declarative pipeline with `JDK21`, `Maven3`, `bat` stages, SCM polling, credentials masking, and health probe
+  - [`docs/08-pipeline-setup.md`](file:///c:/Users/lenovo/Desktop/devops/docs/08-pipeline-setup.md) — Click-by-click setup guide for `legalcase-pipeline` job and parameters
+  - `src/main/resources/application.properties` — H2 database path configured under `${user.home}/.legal-diary/data/casediary` with `AUTO_SERVER=TRUE`
+  - `src/main/java/com/legal/diary/LegalDiaryApplication.java` — Defensive directory bootstrap for persistent storage
+- **Branch:** `feature/jenkinsfile-deploy` (merged via PR #11 into `develop`)
+- **Commands Executed:**
+  ```powershell
+  git checkout -b feature/jenkinsfile-deploy
+  git add src/main/resources/application.properties src/main/java/com/legal/diary/LegalDiaryApplication.java
+  git commit -m "chore(config): configure persistent H2 database path under user home for Tomcat compatibility"
+  git add Jenkinsfile ; git commit -m "ci: add declarative Jenkinsfile with Windows bat stages for Tomcat deployment"
+  git add docs/08-pipeline-setup.md ; git commit -m "docs: add Jenkins pipeline setup guide and Tomcat deployment instructions"
+  git push -u origin feature/jenkinsfile-deploy
+  gh pr create --base develop --head feature/jenkinsfile-deploy --title "..." --body "..."
+  gh pr merge 11 --merge
+  git checkout develop ; git pull origin develop
+  ```
+- **Ports Used:** `8080` (Tomcat 10.1), `9090` (Jenkins)
+- **Viva Voce Knowledge Point (3-4 lines):**
+  > *Task 8 implements Pipeline as Code via a Declarative Jenkinsfile on port 9090 configured with JDK21, Maven3, and SCM polling triggers (`H/2 * * * *`). The pipeline defines parameterization (`DEPLOY_ENV`, `TOMCAT_URL`), builds and archives `legal-diary.war`, and securely deploys to Apache Tomcat 10.1 via the Tomcat Manager text API using masked credentials (`tomcat-creds`). An automated post-deployment verification stage probes the `/legal-diary/login` endpoint with retry polling until HTTP 200 confirms the application is live.*
+
+---
+
 ## 6. Next Immediate Step
-Official Task 8 — Pipeline as Code and Tomcat Deployment: authoring a Declarative `Jenkinsfile` with Windows batch (`bat`) execution stages and automated WAR deployment to Apache Tomcat 10.1 (`C:\tomcat10\webapps`).
+Official Task 9 — Selenium Tests Design and Local Execution: configuring Maven profile `selenium`, designing Page Object models, and implementing 8 end-to-end automated browser test cases in headless Chrome with screenshot-on-failure capture.
