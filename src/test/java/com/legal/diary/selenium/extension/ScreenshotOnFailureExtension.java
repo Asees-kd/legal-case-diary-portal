@@ -32,16 +32,9 @@ public class ScreenshotOnFailureExtension implements TestWatcher {
         System.err.println("[ScreenshotOnFailureExtension] Test failure detected: " + testName + " - Capturing screenshot...");
 
         WebDriver driver = currentDriver;
-        if (driver == null) {
-            Object testInstance = context.getTestInstance().orElse(null);
-            if (testInstance != null) {
-                try {
-                    Field driverField = testInstance.getClass().getDeclaredField("driver");
-                    driverField.setAccessible(true);
-                    driver = (WebDriver) driverField.get(testInstance);
-                } catch (Exception ignored) {
-                }
-            }
+        if (driver != null) {
+            System.err.println("[ScreenshotOnFailureExtension] Current URL at failure: " + driver.getCurrentUrl());
+            System.err.println("[ScreenshotOnFailureExtension] Page title: " + driver.getTitle());
         }
 
         if (driver instanceof TakesScreenshot takesScreenshot) {

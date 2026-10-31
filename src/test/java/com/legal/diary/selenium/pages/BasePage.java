@@ -33,11 +33,11 @@ public abstract class BasePage {
     }
 
     protected void clickElement(By locator) {
-        WebElement el = waitForVisible(locator);
+        WebElement el = waitForClickable(locator);
         try {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
-        } catch (Exception e) {
             el.click();
+        } catch (Exception e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", el);
         }
     }
 

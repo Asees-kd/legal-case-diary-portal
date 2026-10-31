@@ -1,6 +1,7 @@
 package com.legal.diary.selenium.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -19,20 +20,26 @@ public class CaseEditPage extends BasePage {
         super(driver);
     }
 
+    private void setValueViaJs(By locator, String value) {
+        WebElement el = waitForVisible(locator);
+        ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].value = arguments[1]; "
+            + "arguments[0].dispatchEvent(new Event('input', {bubbles:true})); "
+            + "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
+            el, value);
+    }
+
     public void updateTitle(String newTitle) {
-        WebElement el = waitForVisible(titleInput);
-        el.clear();
-        el.sendKeys(newTitle);
+        setValueViaJs(titleInput, newTitle);
     }
 
     public void updateCourt(String newCourt) {
-        WebElement el = waitForVisible(courtInput);
-        el.clear();
-        el.sendKeys(newCourt);
+        setValueViaJs(courtInput, newCourt);
     }
 
     public CaseDetailPage submitChanges() {
-        clickElement(submitBtn);
+        WebElement btn = waitForVisible(submitBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
         return new CaseDetailPage(driver);
     }
 }

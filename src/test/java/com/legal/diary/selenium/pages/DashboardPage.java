@@ -1,7 +1,9 @@
 package com.legal.diary.selenium.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * Page Object encapsulating metrics and navigation on the /dashboard view.
@@ -59,10 +61,15 @@ public class DashboardPage extends BasePage {
 
     public LoginPage logout(int port) {
         try {
-            clickElement(logoutBtn);
+            WebElement btn = waitForVisible(logoutBtn);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
+            wait.until(d -> d.getCurrentUrl().contains("/login") && "complete".equals(((JavascriptExecutor) d).executeScript("return document.readyState")));
+            wait.until(d -> d.findElements(By.id("username")).size() > 0 && d.findElement(By.id("username")).isDisplayed());
         } catch (Exception e) {
-            driver.get("http://localhost:" + port + "/logout");
+            driver.get("http://localhost:" + port + "/login?logout=true");
         }
-        return new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.isOnLoginPage();
+        return loginPage;
     }
 }

@@ -87,6 +87,7 @@ public class LegalDiarySeleniumTest {
     @BeforeEach
     void resetSession() {
         driver.manage().deleteAllCookies();
+        driver.get("http://localhost:" + port + "/login");
     }
 
     @Test
@@ -98,12 +99,12 @@ public class LegalDiarySeleniumTest {
         // 1. Clerk login
         DashboardPage clerkDashboard = loginPage.loginAs("clerk", "clerk123", port);
         assertTrue(clerkDashboard.isOnDashboard(), "Clerk should reach the chamber dashboard upon successful authentication");
-        driver.manage().deleteAllCookies();
+        clerkDashboard.logout(port);
 
         // 2. Lawyer login
         DashboardPage lawyerDashboard = loginPage.loginAs("lawyer", "lawyer123", port);
         assertTrue(lawyerDashboard.isOnDashboard(), "Lawyer should reach the chamber dashboard upon successful authentication");
-        driver.manage().deleteAllCookies();
+        lawyerDashboard.logout(port);
 
         // 3. Admin login
         DashboardPage adminDashboard = loginPage.loginAs("admin", "admin123", port);
@@ -266,6 +267,7 @@ public class LegalDiarySeleniumTest {
         assertFalse(clerkDetailPage.isCloseActionAvailable(), "Clerk must not have access to close case action");
         assertTrue(clerkDetailPage.isUnauthorizedCloseNoticeDisplayed(), "Clerk should see administrator restriction notice");
         driver.manage().deleteAllCookies();
+        driver.get("http://localhost:" + port + "/login");
 
         // 2. Verify Lawyer cannot close
         loginPage.loginAs("lawyer", "lawyer123", port);
@@ -274,6 +276,7 @@ public class LegalDiarySeleniumTest {
         assertFalse(lawyerDetailPage.isCloseActionAvailable(), "Lawyer must not have access to close case action");
         assertTrue(lawyerDetailPage.isUnauthorizedCloseNoticeDisplayed(), "Lawyer should see administrator restriction notice");
         driver.manage().deleteAllCookies();
+        driver.get("http://localhost:" + port + "/login");
 
         // 3. Verify Admin CAN close
         loginPage.loginAs("admin", "admin123", port);

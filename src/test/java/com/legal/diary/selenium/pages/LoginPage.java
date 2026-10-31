@@ -2,6 +2,7 @@ package com.legal.diary.selenium.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -28,16 +29,15 @@ public class LoginPage extends BasePage {
 
     public void enterCredentials(String username, String password) {
         WebElement u = waitForVisible(usernameInput);
-        u.clear();
-        u.sendKeys(username);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true })); arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", u, username);
 
         WebElement p = waitForVisible(passwordInput);
-        p.clear();
-        p.sendKeys(password);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true })); arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", p, password);
     }
 
     public void submit() {
-        clickElement(submitButton);
+        WebElement btn = waitForVisible(submitButton);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
     }
 
     public DashboardPage loginAs(String username, String password, int port) {

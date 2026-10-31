@@ -1,6 +1,7 @@
 package com.legal.diary.selenium.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -88,9 +89,13 @@ public class CaseDetailPage extends BasePage {
 
     public void closeCase(String remarks) {
         WebElement rem = waitForVisible(closeRemarksInput);
-        rem.clear();
-        rem.sendKeys(remarks);
-        clickElement(closeSubmitBtn);
+        ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].value = arguments[1]; "
+            + "arguments[0].dispatchEvent(new Event('input', {bubbles:true})); "
+            + "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
+            rem, remarks);
+        WebElement btn = waitForVisible(closeSubmitBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
         waitForVisible(titleHeading);
     }
 

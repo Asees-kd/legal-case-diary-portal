@@ -34,41 +34,29 @@ public class CaseCreatePage extends BasePage {
         waitForVisible(caseNumberInput);
     }
 
+    private void setValueViaJs(By locator, String value) {
+        WebElement el = waitForVisible(locator);
+        ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].value = arguments[1]; "
+            + "arguments[0].dispatchEvent(new Event('input', {bubbles:true})); "
+            + "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
+            el, value);
+    }
+
     public void fillForm(String caseNumber, String typeValue, String title, String court, String petitioner, String respondent, LocalDate filedDate) {
-        WebElement cn = waitForVisible(caseNumberInput);
-        cn.clear();
-        cn.sendKeys(caseNumber);
-
+        setValueViaJs(caseNumberInput, caseNumber);
         new Select(waitForVisible(caseTypeSelect)).selectByValue(typeValue);
-
-        WebElement t = waitForVisible(titleInput);
-        t.clear();
-        t.sendKeys(title);
-
-        WebElement c = waitForVisible(courtNameInput);
-        c.clear();
-        c.sendKeys(court);
-
-        WebElement p = waitForVisible(petitionerInput);
-        p.clear();
-        p.sendKeys(petitioner);
-
-        WebElement r = waitForVisible(respondentInput);
-        r.clear();
-        r.sendKeys(respondent);
-
-        WebElement d = waitForVisible(filedDateInput);
+        setValueViaJs(titleInput, title);
+        setValueViaJs(courtNameInput, court);
+        setValueViaJs(petitionerInput, petitioner);
+        setValueViaJs(respondentInput, respondent);
         String dateStr = filedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        try {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1];", d, dateStr);
-        } catch (Exception e) {
-            d.clear();
-            d.sendKeys(dateStr);
-        }
+        setValueViaJs(filedDateInput, dateStr);
     }
 
     public CaseListPage submitForm() {
-        clickElement(submitBtn);
+        WebElement btn = waitForVisible(submitBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
         return new CaseListPage(driver);
     }
 }
