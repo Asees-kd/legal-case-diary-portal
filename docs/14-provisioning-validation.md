@@ -48,3 +48,4 @@ localhost                  : ok=5    changed=2    unreachable=0    failed=0    s
 
 service: active
 health check after rollback: HTTP 200
+current symlink after rollback: /opt/legal-diary/releases/1.0.0
