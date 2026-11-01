@@ -59,7 +59,12 @@ pipeline {
                     bat '''
                         @echo off
                         echo Initiating Tomcat deployment via Manager API...
-                        curl.exe -s -S -u "%TOMCAT_USER%:%TOMCAT_PASS%" -T "target\\legal-diary.war" "%TOMCAT_URL%/manager/text/deploy?path=/legal-diary&update=true" > deploy_response.txt 2>&1
+                        echo Undeploying existing application context if present...
+                        curl.exe -s -S -u "%TOMCAT_USER%:%TOMCAT_PASS%" "%TOMCAT_URL%/manager/text/undeploy?path=/legal-diary" > nul 2>&1
+                        echo Waiting 10 seconds for context release...
+                        ping -n 11 127.0.0.1 > nul
+                        echo Deploying WAR package with update=false...
+                        curl.exe -s -S -u "%TOMCAT_USER%:%TOMCAT_PASS%" -T "target\\legal-diary.war" "%TOMCAT_URL%/manager/text/deploy?path=/legal-diary&update=false" > deploy_response.txt 2>&1
                         set /p RESPONSE=<deploy_response.txt
                         echo Tomcat Manager response: %RESPONSE%
                         echo %RESPONSE% | findstr /B "OK" >nul
