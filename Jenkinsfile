@@ -8,7 +8,7 @@ pipeline {
 
     options {
         timestamps()
-        timeout(time: 30, unit: 'MINUTES')
+        timeout(time: 60, unit: 'MINUTES')
     }
 
     parameters {
@@ -121,31 +121,35 @@ pipeline {
             steps {
                 echo "Pushing Docker images to Docker Hub..."
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
-                    bat '''
-                        @echo off
-                        set DOCKER_CONFIG=%WORKSPACE%\\.docker
-                        if not exist "%DOCKER_CONFIG%" mkdir "%DOCKER_CONFIG%"
-                        echo %DH_PASS%| docker login -u %DH_USER% --password-stdin
-                        if %ERRORLEVEL% NEQ 0 (
-                            echo [ERROR] Docker login failed.
-                            exit /b 1
-                        )
-                        echo Pushing tag :%BUILD_NUMBER%...
-                        docker push aseeskaurd/legal-diary:%BUILD_NUMBER%
-                        if %ERRORLEVEL% NEQ 0 (
-                            echo [ERROR] Docker push :%BUILD_NUMBER% failed.
-                            docker logout
-                            exit /b 1
-                        )
-                        echo Pushing tag :latest...
-                        docker push aseeskaurd/legal-diary:latest
-                        if %ERRORLEVEL% NEQ 0 (
-                            echo [ERROR] Docker push :latest failed.
-                            docker logout
-                            exit /b 1
-                        )
-                        docker logout
-                    '''
+                    timeout(time: 25, unit: 'MINUTES') {
+                        retry(3) {
+                            bat '''
+                                @echo off
+                                set DOCKER_CONFIG=%WORKSPACE%\\.docker
+                                if not exist "%DOCKER_CONFIG%" mkdir "%DOCKER_CONFIG%"
+                                echo %DH_PASS%| docker login -u %DH_USER% --password-stdin
+                                if %ERRORLEVEL% NEQ 0 (
+                                    echo [ERROR] Docker login failed.
+                                    exit /b 1
+                                )
+                                echo Pushing tag :%BUILD_NUMBER%...
+                                docker push aseeskaurd/legal-diary:%BUILD_NUMBER%
+                                if %ERRORLEVEL% NEQ 0 (
+                                    echo [ERROR] Docker push :%BUILD_NUMBER% failed.
+                                    docker logout
+                                    exit /b 1
+                                )
+                                echo Pushing tag :latest...
+                                docker push aseeskaurd/legal-diary:latest
+                                if %ERRORLEVEL% NEQ 0 (
+                                    echo [ERROR] Docker push :latest failed.
+                                    docker logout
+                                    exit /b 1
+                                )
+                                docker logout
+                            '''
+                        }
+                    }
                 }
             }
         }
