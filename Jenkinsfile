@@ -109,6 +109,81 @@ pipeline {
                 '''
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                echo "Building Docker images for build #${env.BUILD_NUMBER}..."
+                bat 'docker build -t aseeskaurd/legal-diary:%BUILD_NUMBER% -t aseeskaurd/legal-diary:latest .'
+            }
+        }
+
+        stage('Docker Push') {
+            steps {
+                echo "Pushing Docker images to Docker Hub..."
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
+                    bat '''
+                        @echo off
+                        set DOCKER_CONFIG=%WORKSPACE%\\.docker
+                        if not exist "%DOCKER_CONFIG%" mkdir "%DOCKER_CONFIG%"
+                        echo %DH_PASS%| docker login -u %DH_USER% --password-stdin
+                        if %ERRORLEVEL% NEQ 0 (
+                            echo [ERROR] Docker login failed.
+                            exit /b 1
+                        )
+                        echo Pushing tag :%BUILD_NUMBER%...
+                        docker push aseeskaurd/legal-diary:%BUILD_NUMBER%
+                        if %ERRORLEVEL% NEQ 0 (
+                            echo [ERROR] Docker push :%BUILD_NUMBER% failed.
+                            docker logout
+                            exit /b 1
+                        )
+                        echo Pushing tag :latest...
+                        docker push aseeskaurd/legal-diary:latest
+                        if %ERRORLEVEL% NEQ 0 (
+                            echo [ERROR] Docker push :latest failed.
+                            docker logout
+                            exit /b 1
+                        )
+                        docker logout
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy Container') {
+            steps {
+                echo "Deploying container for image tag aseeskaurd/legal-diary:${env.BUILD_NUMBER}..."
+                bat '''
+                    @echo off
+                    echo Stopping and removing existing container if present...
+                    docker rm -f legal-diary >nul 2>&1
+                    echo Running container aseeskaurd/legal-diary:%BUILD_NUMBER% on port 8082...
+                    docker run -d --name legal-diary -p 8082:8080 aseeskaurd/legal-diary:%BUILD_NUMBER%
+                    if %ERRORLEVEL% NEQ 0 (
+                        echo [ERROR] Failed to run docker container.
+                        exit /b 1
+                    )
+                    echo Image Tag: aseeskaurd/legal-diary:%BUILD_NUMBER%
+                    set ATTEMPT=1
+                    :container_health_check
+                    echo [Attempt %ATTEMPT%/20] Probing http://localhost:8082/login ...
+                    for /f %%s in ('curl.exe -s -o nul -w "%%{http_code}" "http://localhost:8082/login"') do set HTTP_CODE=%%s
+                    echo Response HTTP Code: %HTTP_CODE%
+                    if "%HTTP_CODE%"=="200" (
+                        echo [SUCCESS] Container health check passed with HTTP 200 on port 8082!
+                        exit /b 0
+                    )
+                    if %ATTEMPT% GEQ 20 (
+                        echo [ERROR] Container health check timed out after 20 attempts. Expected HTTP 200, got %HTTP_CODE%.
+                        docker logs --tail 30 legal-diary
+                        exit /b 1
+                    )
+                    set /a ATTEMPT=%ATTEMPT%+1
+                    ping 127.0.0.1 -n 6 >nul
+                    goto container_health_check
+                '''
+            }
+        }
     }
 
     post {
