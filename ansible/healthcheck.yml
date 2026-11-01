@@ -1,0 +1,21 @@
+---
+- name: Standalone Health Check for Legal Case Diary Portal
+  hosts: app_servers
+  become: no
+  vars:
+    server_port: 8083
+
+  tasks:
+    - name: Probe application HTTP login endpoint
+      ansible.builtin.uri:
+        url: "http://localhost:{{ server_port }}/login"
+        status_code: 200
+      register: health_check
+      until: health_check.status == 200
+      retries: 20
+      delay: 5
+      changed_when: false
+
+    - name: Display health verification status
+      ansible.builtin.debug:
+        msg: "Application health check passed with HTTP {{ health_check.status }} on port {{ server_port }}."

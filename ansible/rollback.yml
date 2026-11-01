@@ -1,0 +1,47 @@
+---
+- name: Rollback Legal Case Diary Portal to Previous Stable Release
+  hosts: app_servers
+  become: yes
+  vars:
+    rollback_version: "1.0.0"
+    base_dir: /opt/legal-diary
+    server_port: 8083
+
+  tasks:
+    - name: Verify rollback target release exists
+      ansible.builtin.stat:
+        path: "{{ base_dir }}/releases/{{ rollback_version }}/legal-diary.war"
+      register: target_war
+
+    - name: Fail if target rollback release does not exist
+      ansible.builtin.fail:
+        msg: "Rollback target release {{ rollback_version }} not found in {{ base_dir }}/releases/"
+      when: not target_war.stat.exists
+
+    - name: Repoint current symlink to rollback version
+      ansible.builtin.file:
+        src: "{{ base_dir }}/releases/{{ rollback_version }}"
+        dest: "{{ base_dir }}/current"
+        state: link
+        force: yes
+      notify: restart legal-diary
+
+    - name: Flush handlers to execute service restart immediately
+      ansible.builtin.meta: flush_handlers
+
+    - name: Verify application endpoint is healthy post-rollback
+      ansible.builtin.uri:
+        url: "http://localhost:{{ server_port }}/login"
+        status_code: 200
+      register: rollback_health
+      until: rollback_health.status == 200
+      retries: 20
+      delay: 5
+      changed_when: false
+
+  handlers:
+    - name: restart legal-diary
+      ansible.builtin.systemd:
+        name: legal-diary
+        state: restarted
+        daemon_reload: yes
