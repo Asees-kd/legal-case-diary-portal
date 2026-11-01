@@ -404,5 +404,14 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 
 ---
 
+### Task 13: Configuration Management Script with Ansible
+- **Status:** Completed
+- **Date:** 2026-11-01
+- **Files Created / Modified:** ansible/ansible.cfg, ansible/inventory.ini, ansible/playbook.yml, ansible/healthcheck.yml, ansible/rollback.yml, .gitattributes, docs/13-config-spec.md, docs/13-first-run.log
+- **Commands Executed:** ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
+- **Viva Voce Note:** Authored idempotent Ansible automation deploying the Spring Boot application under /opt/legal-diary, managing systemd unit legal-diary.service with user isolation on port 8083 and verified automated health check.
+
+---
+
 ## 6. Next Immediate Step
-Official Task 13 — Configuration Management Script with Ansible in WSL Ubuntu.
+Official Task 14: Provisioning and Reliability Validation (Clean Start, Idempotency, Health Check, and Automated Rollback).
