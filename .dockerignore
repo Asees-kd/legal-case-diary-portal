@@ -1,0 +1,6 @@
+target/*
+!target/legal-diary.war
+.git
+.idea
+*.log
+
