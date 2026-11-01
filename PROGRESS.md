@@ -368,5 +368,41 @@ Official assignment tasks are 14 (Task 1 to Task 14, defined by my college: 1 Pr
 
 ---
 
+### Task 9: Selenium Automated End-to-End Testing
+- **Status:** Completed
+- **Date:** 2026-11-01
+- **Files Created / Modified:** `LegalDiarySeleniumTest.java`, `LoginPage.java`, `DashboardPage.java`, `CaseCreatePage.java`, `CaseDetailPage.java`, `CaseEditPage.java`, `CaseListPage.java`, `docs/09-test-plan.md`
+- **Commands Executed:** `mvn.cmd test -Pselenium`
+- **Viva Voce Note:** 8 automated Selenium 4 test cases running in headless Chrome validating full RBAC, case intake, judicial status workflow transitions, search, and telemetry.
+
+---
+
+### Task 10: Continuous Testing in Jenkins Pipeline
+- **Status:** Completed
+- **Date:** 2026-11-01
+- **Files Created / Modified:** `Jenkinsfile`, `dashboard.html`
+- **Commands Executed:** `git checkout -b feature/ci-selenium`, `git checkout -b bugfix/demo-defect`
+- **Viva Voce Note:** Integrated Selenium test stage and JUnit test archiving into the Jenkins pipeline; verified failure gating using a deliberate defect branch which failed prior to deployment, followed by green verification.
+
+---
+
+### Task 11: Docker Container Lifecycle Management
+- **Status:** Completed
+- **Date:** 2026-11-01
+- **Files Created / Modified:** `Dockerfile`, `.dockerignore`, `docs/11-docker-lifecycle.md`
+- **Commands Executed:** `docker build -t aseeskaurd/legal-diary:1.0 .`, `docker run -d --name legal-diary -p 8082:8080 aseeskaurd/legal-diary:1.0`
+- **Viva Voce Note:** Containerized the Spring Boot executable WAR using Eclipse Temurin 17 JRE image, verified health probe HTTP 200 on port 8082, and captured complete lifecycle telemetry.
+
+---
+
+### Task 12: Jenkins-Docker Continuous Deployment Pipeline
+- **Status:** Completed
+- **Date:** 2026-11-01
+- **Files Created / Modified:** `Jenkinsfile`, `docs/12-jenkins-docker-setup.md`
+- **Commands Executed:** `git checkout -b feature/jenkins-docker-cd`
+- **Viva Voce Note:** Extended Jenkinsfile with automated Docker Build, authenticated Docker Push using scoped credentials, and automated Container Deployment on port 8082 with automated retry health checks.
+
+---
+
 ## 6. Next Immediate Step
-Official Task 9 — Selenium Tests Design and Local Execution: configuring Maven profile `selenium`, designing Page Object models, and implementing 8 end-to-end automated browser test cases in headless Chrome with screenshot-on-failure capture.
+Official Task 13 — Configuration Management Script with Ansible in WSL Ubuntu.
