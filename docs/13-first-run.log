@@ -1,0 +1,29 @@
+PLAY [Deploy and Configure Legal Case Diary Portal] ****************************
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+TASK [Install OpenJDK 17 JRE Headless] *****************************************
+changed: [localhost]
+TASK [Create legaldiary system group] ******************************************
+changed: [localhost]
+TASK [Create legaldiary system user] *******************************************
+changed: [localhost]
+TASK [Ensure application directory structure exists] ***************************
+changed: [localhost] => (item=/opt/legal-diary)
+changed: [localhost] => (item=/opt/legal-diary/releases)
+changed: [localhost] => (item=/opt/legal-diary/releases/1.0.0)
+changed: [localhost] => (item=/opt/legal-diary/shared)
+TASK [Deploy application WAR archive] ******************************************
+changed: [localhost]
+TASK [Point current symlink to target release] *********************************
+changed: [localhost]
+TASK [Install systemd unit service file] ***************************************
+changed: [localhost]
+TASK [Ensure legal-diary service is enabled and started] ***********************
+changed: [localhost]
+TASK [Flush handlers to apply service restarts immediately] ********************
+RUNNING HANDLER [restart legal-diary] ******************************************
+changed: [localhost]
+TASK [Verify application endpoint is healthy] **********************************
+ok: [localhost]
+PLAY RECAP *********************************************************************
+localhost                  : ok=11   changed=9    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
