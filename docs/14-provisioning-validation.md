@@ -43,3 +43,8 @@ localhost                  : ok=3    changed=0    unreachable=0    failed=0    s
 PLAY RECAP *********************************************************************
 localhost                  : ok=5    changed=2    unreachable=0    failed=0    skipped=1
 ```
+
+## 5. Post-rollback verification (live)
+
+service: active
+health check after rollback: HTTP 200
