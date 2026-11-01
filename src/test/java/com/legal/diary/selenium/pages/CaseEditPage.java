@@ -38,8 +38,9 @@ public class CaseEditPage extends BasePage {
     }
 
     public CaseDetailPage submitChanges() {
-        WebElement btn = waitForVisible(submitBtn);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
+        WebElement btn = waitForClickable(submitBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        wait.until(d -> !d.getCurrentUrl().contains("/edit"));
         return new CaseDetailPage(driver);
     }
 }

@@ -45,7 +45,8 @@ public class CaseCreatePage extends BasePage {
 
     public void fillForm(String caseNumber, String typeValue, String title, String court, String petitioner, String respondent, LocalDate filedDate) {
         setValueViaJs(caseNumberInput, caseNumber);
-        new Select(waitForVisible(caseTypeSelect)).selectByValue(typeValue);
+        WebElement catEl = waitForVisible(caseTypeSelect);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('change', {bubbles:true}));", catEl, typeValue);
         setValueViaJs(titleInput, title);
         setValueViaJs(courtNameInput, court);
         setValueViaJs(petitionerInput, petitioner);
@@ -55,8 +56,9 @@ public class CaseCreatePage extends BasePage {
     }
 
     public CaseListPage submitForm() {
-        WebElement btn = waitForVisible(submitBtn);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
+        WebElement btn = waitForClickable(submitBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        wait.until(d -> !d.getCurrentUrl().contains("/cases/new"));
         return new CaseListPage(driver);
     }
 }

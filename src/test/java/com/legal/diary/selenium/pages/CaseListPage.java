@@ -1,6 +1,7 @@
 package com.legal.diary.selenium.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -27,9 +28,9 @@ public class CaseListPage extends BasePage {
 
     public void search(String query) {
         WebElement input = waitForVisible(searchInput);
-        input.clear();
-        input.sendKeys(query);
-        clickElement(searchSubmit);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', {bubbles:true})); arguments[0].dispatchEvent(new Event('change', {bubbles:true}));", input, query);
+        WebElement btn = waitForClickable(searchSubmit);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
     }
 
     public boolean hasCaseNumber(String caseNumber) {
@@ -49,7 +50,7 @@ public class CaseListPage extends BasePage {
 
     public boolean isNoResultsDisplayed() {
         try {
-            By emptyMsg = By.xpath("//td[contains(.,'No legal cases match')]");
+            By emptyMsg = By.xpath("//*[contains(text(), 'No legal cases match')]");
             return waitForVisible(emptyMsg).isDisplayed();
         } catch (Exception e) {
             return false;

@@ -40,11 +40,8 @@ public class CaseDetailPage extends BasePage {
     }
 
     public String getStatusBadgeText() {
-        var pills = driver.findElements(statusPills);
-        if (pills.size() >= 2) {
-            return pills.get(1).getText().trim();
-        }
-        return waitForVisible(statusPills).getText().trim();
+        By badge = By.xpath("//div[contains(@class, 'card')]//span[contains(@class, 'status-pill') and not(contains(@class, 'status-review'))]");
+        return waitForVisible(badge).getText().trim().toUpperCase();
     }
 
     public boolean isCloseActionAvailable() {
@@ -94,13 +91,14 @@ public class CaseDetailPage extends BasePage {
             + "arguments[0].dispatchEvent(new Event('input', {bubbles:true})); "
             + "arguments[0].dispatchEvent(new Event('change', {bubbles:true}));",
             rem, remarks);
-        WebElement btn = waitForVisible(closeSubmitBtn);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
-        waitForVisible(titleHeading);
+        WebElement btn = waitForClickable(closeSubmitBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        wait.until(d -> d.findElements(By.xpath("//div[contains(@class, 'card')]//span[contains(@class, 'status-pill') and contains(text(), 'Closed')]")).size() > 0);
     }
 
     public CaseEditPage clickEdit() {
-        clickElement(editBtn);
+        WebElement btn = waitForClickable(editBtn);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
         return new CaseEditPage(driver);
     }
 

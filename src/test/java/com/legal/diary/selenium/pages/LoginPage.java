@@ -36,14 +36,15 @@ public class LoginPage extends BasePage {
     }
 
     public void submit() {
-        WebElement btn = waitForVisible(submitButton);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
+        WebElement btn = waitForClickable(submitButton);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
     }
 
     public DashboardPage loginAs(String username, String password, int port) {
         open(port);
         enterCredentials(username, password);
         submit();
+        wait.until(d -> !d.getCurrentUrl().contains("/login"));
         DashboardPage dashboardPage = new DashboardPage(driver);
         dashboardPage.isOnDashboard();
         return dashboardPage;

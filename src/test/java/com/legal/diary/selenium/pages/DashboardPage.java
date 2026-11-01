@@ -61,9 +61,9 @@ public class DashboardPage extends BasePage {
 
     public LoginPage logout(int port) {
         try {
-            WebElement btn = waitForVisible(logoutBtn);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].closest('form').submit();", btn);
-            wait.until(d -> d.getCurrentUrl().contains("/login") && "complete".equals(((JavascriptExecutor) d).executeScript("return document.readyState")));
+            WebElement btn = waitForClickable(logoutBtn);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+            wait.until(d -> d.getCurrentUrl().contains("/login"));
             wait.until(d -> d.findElements(By.id("username")).size() > 0 && d.findElement(By.id("username")).isDisplayed());
         } catch (Exception e) {
             driver.get("http://localhost:" + port + "/login?logout=true");
