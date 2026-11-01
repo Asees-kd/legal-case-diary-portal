@@ -46,6 +46,12 @@ pipeline {
             }
         }
 
+        stage('Selenium Tests') {
+            steps {
+                bat 'mvn -B test -Pselenium'
+            }
+        }
+
         stage('Deploy') {
             steps {
                 echo "Deploying to ${params.DEPLOY_ENV} environment at ${params.TOMCAT_URL}..."
@@ -97,6 +103,13 @@ pipeline {
                     goto health_check_loop
                 '''
             }
+        }
+    }
+
+    post {
+        always {
+            junit 'target/surefire-reports/*.xml'
+            archiveArtifacts artifacts: 'target/screenshots/**', allowEmptyArchive: true
         }
     }
 }
